@@ -1,4 +1,3 @@
-#include <time.h>
 #include "commands.h"
 
 
@@ -17,7 +16,8 @@ void commandHandler()
     printWelcome();
 
     while(1)
-    {
+    {   
+        // display terminal prompt
         green();
         printf("TechOS:");
         reset();
@@ -29,6 +29,7 @@ void commandHandler()
         sscanf(line, "%s %s", currentCommand, arguments);
 
 
+        // command handler code
         if(strcmp(currentCommand,"help") == 0)
         {
             printHelpMenu();
@@ -51,6 +52,7 @@ void commandHandler()
         }
         else if(strcmp(currentCommand,"exit") == 0)
         {
+            // confirm that the user wishes to exit
             printf("\nAre you sure you want to exit(y/n)?\n");
             char answer = getchar();
 
