@@ -20,9 +20,8 @@ void commandHandler()
         printf("TechOS:");
         reset();
         blue();
-        printf("~");
+        printf("> ");
         reset();
-        printf("$ ");
         fgets(line, MAX_LINE, stdin);
         sscanf(line, "%s %s", currentCommand, arguments);
 
