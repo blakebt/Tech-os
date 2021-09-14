@@ -67,6 +67,7 @@ void commandHandler()
             }
                       
         }
+        // if an invalid command is entered
         else
         {
             red();
