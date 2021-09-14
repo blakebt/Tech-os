@@ -1,4 +1,7 @@
+#include <time.h>
 #include "commands.h"
+
+
 
 int main()
 {
@@ -25,6 +28,7 @@ void commandHandler()
         fgets(line, 128, stdin);
         sscanf(line, "%s %s", currentCommand, arguments);
 
+
         if(strcmp(currentCommand,"help") == 0)
         {
             printHelpMenu();
@@ -37,13 +41,13 @@ void commandHandler()
         {
             displayTime(arguments);
         }
+        else if(strcmp(currentCommand,"change-date") == 0)
+        {
+            changeDate(arguments);
+        }
         else if(strcmp(currentCommand,"display-date") == 0)
         {
             displayDate();
-        }
-        else if(strcmp(currentCommand, "change-date") == 0)
-        {
-            changeDate(arguments);
         }
         else if(strcmp(currentCommand,"exit") == 0)
         {
@@ -52,11 +56,14 @@ void commandHandler()
 
             if(answer == 'y' || answer == 'Y')
             {
-                printf("Thank you for using TechOS\n");
+                printf("\nThank you for using TechOS\n");
                 break;
             }
-            
-            fflush(stdin);          
+            else
+            {
+                fflush(stdin);
+            }
+                      
         }
         else
         {
@@ -104,58 +111,13 @@ void showVersion()
     char line[128];
     if(fp != NULL)
     {
+        printf("\n");
         while(!feof(fp))
         {
             fscanf(fp, "%[^,] %s", line);
             printf("%s", line);
         } 
     }
-    printf("\n");
+    printf("\n\n");
     fclose(fp);
-}
-
-void displayTime(char* arguments)
-{
-    time_t rawTime;
-    struct tm* timeInfo;
-
-    time(&rawTime);
-    timeInfo = localtime (&rawTime);
-
-    if(strcmp(arguments,"help") == 0)
-    {
-        blue();
-        printf("display-time ");
-        reset();
-        printf("gives the time in 24hr format by default.\nUse the argument '12' to display in 12hr format.\n");
-    }
-    else if(strcmp(arguments,"12") == 0 && timeInfo->tm_hour > 12)
-    {
-        timeInfo->tm_hour = timeInfo->tm_hour - 12;
-        printf("The current time is: %d:%d:%d\n", timeInfo->tm_hour, timeInfo->tm_min, timeInfo->tm_sec);
-    }
-    else
-    {
-        printf("The current time is: %d:%d:%d\n", timeInfo->tm_hour, timeInfo->tm_min, timeInfo->tm_sec);
-    }
-
-}
-void red()
-{
-    printf("\033[1;31m");
-}
-
-void blue()
-{
-    printf("\033[0;34m");
-}
-
-void green()
-{
-    printf("\033[0;32m");
-}
-
-void reset()
-{
-    printf("\033[0m");
 }
