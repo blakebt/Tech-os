@@ -6,8 +6,6 @@
 #include <time.h>
 
 
-void changeDate(char arguments[]);
-void displayDate();
 void printWelcome();
 void printHelpMenu();
 void showVersion();
@@ -17,6 +15,9 @@ void red();
 void blue();
 void green();
 void reset();
+void changeDate(char* arguments);
+void displayDate();
+
 
 
 #endif
