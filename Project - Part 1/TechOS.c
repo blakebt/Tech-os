@@ -1,7 +1,5 @@
 #include "commands.h"
 
-
-
 int main()
 {
     commandHandler();
@@ -10,9 +8,9 @@ int main()
 
 void commandHandler()
 {
-    char line[128];
-    char currentCommand[64];
-    char arguments[64];
+    char line[MAX_LINE];
+    char currentCommand[MAX_COMMAND];
+    char arguments[MAX_COMMAND];
     printWelcome();
 
     while(1)
@@ -25,7 +23,7 @@ void commandHandler()
         printf("~");
         reset();
         printf("$ ");
-        fgets(line, 128, stdin);
+        fgets(line, MAX_LINE, stdin);
         sscanf(line, "%s %s", currentCommand, arguments);
 
 
@@ -53,7 +51,7 @@ void commandHandler()
         else if(strcmp(currentCommand,"exit") == 0)
         {
             // confirm that the user wishes to exit
-            printf("\nAre you sure you want to exit(y/n)?\n");
+            printf("\nAre you sure you want to exit (y/n)?\n");
             char answer = getchar();
 
             if(answer == 'y' || answer == 'Y')
@@ -76,12 +74,16 @@ void commandHandler()
         }
     }
 }
+
+// function to print the welcome message
 void printWelcome()
 {
     printf("            Welcome to TechOS.\n");
     printf("Begin entering commands whenever you're ready.\n");
     printf("If you would like a list of commands, type help.\n\n");
 }
+
+// function to print the list of commands
 void printHelpMenu()
 {
     FILE *fp;
@@ -92,7 +94,7 @@ void printHelpMenu()
     {
         printf("\nAvailable commands:\n");
         printf("-------------------\n");
-        char command[128];
+        char command[MAX_COMMAND];
         while(!feof(fp))
         {
             fscanf(fp,"%[^,] %s", command);
@@ -108,6 +110,7 @@ void printHelpMenu()
     fclose(fp);
 }
 
+// function to print the version information
 void showVersion()
 {
     FILE *fp;

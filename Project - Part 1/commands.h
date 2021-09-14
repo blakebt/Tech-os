@@ -1,6 +1,9 @@
 #ifndef COMMANDS_H_INCLUDED
 #define COMMANDS_H_INCLUDED
 
+#define MAX_LINE 128
+#define MAX_COMMAND 64
+
 #include <stdio.h>
 #include <string.h>
 #include <time.h>
