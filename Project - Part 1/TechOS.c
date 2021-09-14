@@ -104,6 +104,8 @@ void printHelpMenu()
     {
         printf("ERROR. Input file is missing");
     }
+
+    fclose(fp);
 }
 
 void showVersion()
