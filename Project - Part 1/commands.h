@@ -19,7 +19,7 @@ void blue();
 void green();
 void reset();
 void changeDate(char* arguments);
-void displayDate();
+void displayDate(char* arguments);
 
 
 

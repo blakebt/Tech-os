@@ -46,7 +46,7 @@ void commandHandler()
         }
         else if(strcmp(currentCommand,"display-date") == 0)
         {
-            displayDate();
+            displayDate(arguments);
         }
         else if(strcmp(currentCommand,"exit") == 0)
         {
