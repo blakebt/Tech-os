@@ -55,6 +55,7 @@ void changeDate(char* arguments)
                             if(sysTime->tm_mday <= 0 || sysTime->tm_mday > 28)
                                 valid = 0;
                         }
+                        break;
                     default:
                         valid = 0; //if it gets here, then the entered month is invalid
                 }
