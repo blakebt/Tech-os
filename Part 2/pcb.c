@@ -55,8 +55,7 @@ int freePcb(struct Pcb* process)
     return isSuccess;
 }
 
-/* Need to add a way to check for bufffer overflow of process name
-*/
+
 struct Pcb* setupPcb(char* name, int pClass, int priority)
 {
     int error = 0;
