@@ -1,11 +1,11 @@
 #include <stdio.h>
 #include <stdlib.h>
+#include "pcbHeader.h"
 
 struct Node
 {
-    int data;
+    struct Pcb* data;
     struct Node* next;
-
 };
 
 struct Node* initializeNode(int* count)

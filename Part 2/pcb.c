@@ -1,6 +1,7 @@
 #include <stdio.h>
 #include <stdlib.h>
 #include <string.h>
+#include "pcbHeader.h"
 #define MAX_PNAME 50
 
 struct Pcb* allocatePCB();
@@ -93,4 +94,60 @@ struct Pcb* setupPcb(char* name, int pClass, int priority)
     }
 
     return newProcess;
+}
+
+struct Pcb* findPcb(char pName[MAX_PNAME], struct Pcb* readyHead, struct Pcb* blockHead) //finds the PCB with the matching name in one of the queues and returns the pointer
+{
+    if(readyHead != NULL)
+    {
+        if(strcmp(readyHead->p_name, pName) == 0)
+        {
+            return readyHead;
+        }
+        struct Pcb* current = readyHead;
+        while(current->next != NULL)
+        {
+            current = current->next;
+            if(strcmp(current->p_name, pName) == 0)
+            {
+                return current;
+            }
+        }
+    }
+
+    if(blockHead != NULL)
+    {
+        if(strcmp(blockHead->p_name, pName) == 0)
+        {
+            return blockHead;
+        }
+        struct Pcb* current = blockHead;
+        while(current->next != NULL)
+        {
+            current = current->next;
+            if(strcmp(current->p_name, pName) == 0)
+            {
+                return current;
+            }
+        }
+    }
+
+    return NULL;
+}
+
+void insertPcb(struct Pcb* toIn, struct Pcb* readyHead, struct Pcb* blockHead) //adds the PCB to the appropriate queue 
+{
+    if(toIn->p_state == 1)
+    {
+        enqueuePriority(readyHead, toIn);
+    }
+    else if(toIn->p_state == 2)
+    {
+        enqueue(blockHead, toIn);
+    }
+}
+
+int removePcb(struct Pcb* toPull) //removes the PCB from it's queue, and returns a success/failure notice of 1/0 respectively
+{
+
 }
