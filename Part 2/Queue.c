@@ -44,17 +44,22 @@ void enqueuePriority(struct Node* head, struct Node* node)
     else
     {
         struct Node* current = head;
-        while(node->data > current->data)
+        struct Node* prev = head;
+        while(current->data <= node->data)
         {
+            prev = current;
             current = current->next;
         }
-        
+
+        prev->next = node;
+        node->next= current;
     }
 }
-struct Node* dequeue(struct Node* head, int* count)
+struct Node* dequeue(struct Node** head)
 {
-    count--;
-    return head->next;
+    struct Node* temp = *head;
+    (*head) = (*head)->next;
+    free(temp);
 }
 
 void printList(struct Node* head)
@@ -77,11 +82,13 @@ int main()
         enqueue(head, temp);
     }
     printList(head);
-    for(int i = 0; i < 5; i++)
-    {
-        head = dequeue(head,&count);
-        printList(head);
-        printf("\n");
-    }
+    printf("\n");
+    struct Node* temp = initializeNode(&count);
+    temp->data = 3;
+    enqueuePriority(head,temp);
+    printList(head);
+    printf("\n");
+    dequeue(&head);
+    printList(head);
 
 }
