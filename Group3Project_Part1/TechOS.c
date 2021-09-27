@@ -11,6 +11,7 @@ void commandHandler()
     char line[MAX_LINE];
     char currentCommand[MAX_COMMAND];
     char arguments[MAX_COMMAND];
+    char argument2[MAX_COMMAND];
     struct PCB* readyQueueHead = NULL;
     struct PCB* blockQueueHead = NULL;
     struct PCB* suspendedReadyHead = NULL;
@@ -27,7 +28,7 @@ void commandHandler()
         printf("> ");
         reset();
         fgets(line, MAX_LINE, stdin);
-        sscanf(line, "%s %s", currentCommand, arguments);
+        sscanf(line, "%s %s %s", currentCommand, arguments, argument2);
 
 
         // command handler code
@@ -54,49 +55,19 @@ void commandHandler()
         
         else if(strcmp(currentCommand, "suspend") == 0)
         {
-            struct PCB* toSuspend = findPcb(arguments, readyQueueHead, blockQueueHead);
-            if(toSuspend != NULL)
-            {
-                if(toSuspend->p_state == 1)
-                {
-                    toSuspend->isSuspended = 1;
-                    enqueue(&suspendedReadyHead, &toSuspend);
-                }
-                else if(toSuspend->p_state == 2)
-                {
-                    toSuspend->isSuspended = 1;
-                    enqueue(&suspendedBlockHead, &toSuspend);
-                }
-            }
-            else
-            {
-                red();
-                printf("Currently no queued process by that name\n");
-                reset();
-            }
+            suspend(arguments, readyQueueHead, blockQueueHead, suspendedReadyHead, suspendedBlockHead);
         }
         else if(strcmp(currentCommand, "resume") == 0)
         {
-            struct PCB* unsuspend = findPcb(arguments, suspendedReadyHead, suspendedBlockHead);
-            if(unsuspend != NULL)
-            {
-                if(unsuspend->p_state ==1)
-                {
-                    unsuspend->isSuspended = 0;
-                    enqueuePriority(&readyQueueHead, &unsuspend);
-                }
-                else if(unsuspend->p_state ==2)
-                {
-                    unsuspend->isSuspended = 0;
-                    enqueue(&blockQueueHead, &unsuspend);
-                }
-            }
-            else
-            {
-                red();
-                printf("Currenlty no suspended process by that name\n");
-                reset();
-            }
+            resume(arguments, readyQueueHead, blockQueueHead, suspendedReadyHead, suspendedBlockHead); 
+        }
+        else if(strcmp(currentCommand, "set-priority") == 0)
+        {
+            setPriority(arguments, argument2, readyQueueHead, blockQueueHead, suspendedReadyHead, suspendedBlockHead);
+        }
+        else if(strcmp(currentCommand, "show-pcb") == 0)
+        {
+            showPCB(arguments, readyQueueHead, blockQueueHead, suspendedReadyHead, suspendedBlockHead);
         }
         else if(strcmp(currentCommand,"exit") == 0)
         {

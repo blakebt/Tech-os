@@ -60,9 +60,70 @@ void resume(char arguments[MAX_COMMAND], struct PCB* readyQueueHead, struct PCB*
     }
 }
 
-void setPriority(char arguments[MAX_COMMAND], struct PCB* readyQueue)
+void setPriority(char name[MAX_COMMAND], char priority[MAX_COMMAND], struct PCB* readyQueue, struct PCB* blockQueue, struct PCB* readySuspend, struct PCB* blockSuspend)
 {
-    
+    int newPriority = atoi(priority);
+    if(newPriority >= 0 && newPriority <= 9)
+    {
+        struct PCB* pChange = findPcb(name, readyQueue, blockQueue);
+        if(pChange == NULL)
+        {
+            pChange = findPcb(name, readySuspend, blockSuspend);
+        }
+        if(pChange != NULL)
+        {
+            if(pChange->p_state == 1 && pChange->isSuspended == 0)
+            {
+                removePcb(pChange, readyQueue, blockQueue);
+                pChange->p_priority = newPriority;
+                enqueuePriority(&readyQueue, &pChange);
+            }
+            else
+            {
+                pChange->p_priority = newPriority;
+            }
+        }
+        else
+        {
+            printf("Process not found\n");
+        }
+    }
+    else
+    {
+        printf("Priority out of bounds\n");
+    }
+}
+
+void showPCB(char name[MAX_COMMAND], struct PCB* readyQueue, struct PCB* blockQueue, struct PCB* readySuspend, struct PCB* blockSuspend)
+{
+    struct PCB* displayable = findPcb(name, readyQueue, blockQueue);
+    if(displayable == NULL)
+    {
+        displayable = findPcb(name, readySuspend, blockSuspend);
+    }
+    if(displayable != 0)
+    {
+        printf("Name: %s\n", displayable->p_name);
+        if(displayable->p_class == 0)
+            printf("Class: Application\n");
+        else
+            printf("Class: System\n");
+        if(displayable->p_state == 1)
+            printf("State: Ready\n");
+        else if(displayable->p_state == 2)
+            printf("State: Blocked\n");
+        else    
+            printf("State: Running\n");
+        if(displayable->isSuspended == 1)
+            printf("Currently Suspended\n");
+        else
+            printf("Currently Not Suspended\n");
+        printf("Priority: %d", displayable->p_priority);
+    }
+    else
+    {
+        printf("Process not found\n");
+    }
 }
 
 // struct Pcb
@@ -111,7 +172,7 @@ struct PCB* allocatePCB()
     return newProcess;
 }
 
-int freePcb(struct PCB* process)
+int freePCB(struct PCB* process)
 {
     int isSuccess;
     if(process == NULL)
@@ -129,7 +190,7 @@ int freePcb(struct PCB* process)
 }
 
 
-struct PCB* setupPcb(char* name, int pClass, int priority)
+struct PCB* setupPCB(char* name, int pClass, int priority)
 {
     int error = 0;
     struct PCB* newProcess = allocatePCB();

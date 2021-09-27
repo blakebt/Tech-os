@@ -38,9 +38,13 @@ void enqueue(struct PCB** head, struct PCB** pcb);
 void enqueuePriority(struct PCB** head, struct PCB** PCB);
 struct PCB* dequeue(struct PCB** head);
 //From Ppcb.c
+void suspend(char arguments[MAX_COMMAND], struct PCB* readyQueueHead, struct PCB* blockQueueHead, struct PCB* suspendReadyHead, struct PCB* suspendBlockHead);
+void resume(char arguments[MAX_COMMAND], struct PCB* readyQueueHead, struct PCB* blockQueueHead, struct PCB* suspendedReadyHead, struct PCB* suspendedBlockHead);
+void setPriority(char name[MAX_COMMAND], char priority[MAX_COMMAND], struct PCB* readyQueue, struct PCB* blockQueue, struct PCB* readySuspend, struct PCB* blockSuspend);
+void showPCB(char name[MAX_COMMAND], struct PCB* readyQueue, struct PCB* blockQueue, struct PCB* readySuspend, struct PCB* blockSuspend);
 struct PCB* allocatePCB();
-int freePcb(struct PCB* process);
-struct PCB* setupPcb(char* name, int class, int priority);
+int freePCB(struct PCB* process);
+struct PCB* setupPCB(char* name, int class, int priority);
 struct PCB* findPcb(char pName[MAX_PNAME], struct PCB* readyHead, struct PCB* blockHead);
 void insertPcb(struct PCB* toIn, struct PCB* readyHead, struct PCB* blockHead);
 int removePcb(struct PCB* toPull, struct PCB* readyHead, struct PCB* blockHead);
