@@ -23,6 +23,7 @@ int removePcb(struct Pcb* toPull, struct Node* readyHead, struct Node* blockHead
 
 int main()
 {
+    printf("Starting test\n");
     struct Node* head = NULL;
     char name[MAX_PNAME] = "tester";
     struct Pcb* p1 = setupPcb(name, 0, 6);

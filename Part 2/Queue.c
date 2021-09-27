@@ -8,7 +8,7 @@
 //     struct Node* next;
 // };
 
-struct Node* initializeNode(int* count, struct Pcb* pcb)
+struct Node* initializeNode(int* count, struct PCB* pcb)
 {
     struct Node* n = (struct Node*)malloc(sizeof(struct Node));
     n->data = pcb;
@@ -18,7 +18,7 @@ struct Node* initializeNode(int* count, struct Pcb* pcb)
     return n;
 }
 
-void enqueue(struct Node* head, struct Pcb* node)
+void enqueue(struct Node* head, struct PCB* node)
 {
     if(head == NULL)
     {
@@ -26,7 +26,7 @@ void enqueue(struct Node* head, struct Pcb* node)
     }
     else
     {
-        struct Pcb* current = head->data;
+        struct PCB* current = head->data;
         while(current->next != NULL)
         {
             current = current->next;
@@ -35,7 +35,7 @@ void enqueue(struct Node* head, struct Pcb* node)
     }
 }
 
-void enqueuePriority(struct Node* head, struct Pcb* node)
+void enqueuePriority(struct Node* head, struct PCB* node)
 {
     if(head == NULL)
     {
@@ -43,7 +43,7 @@ void enqueuePriority(struct Node* head, struct Pcb* node)
     }
     else
     {
-        struct Pcb* current = head->data;
+        struct PCB* current = head->data;
         while(node->p_priority > current->p_priority)
         {
             current = current->next;
@@ -62,7 +62,7 @@ void printList(struct Node* head)
     struct Node* current = head;
     while(current != NULL)
     {
-        printf("%d ", current->data);
+        printf("%s ", current->data->p_name);
         current = current->next;
     }
 }
