@@ -1,1 +1,1 @@
- help, version, display-date, change-date, display-time, exit
+ help, version, display-date, change-date, display-time, suspend, resume, exit

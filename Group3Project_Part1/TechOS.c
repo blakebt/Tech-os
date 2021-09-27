@@ -11,6 +11,10 @@ void commandHandler()
     char line[MAX_LINE];
     char currentCommand[MAX_COMMAND];
     char arguments[MAX_COMMAND];
+    struct PCB* readyQueueHead = NULL;
+    struct PCB* blockQueueHead = NULL;
+    struct PCB* suspendedReadyHead = NULL;
+    struct PCB* suspendedBlockHead = NULL;
     printWelcome();
 
     while(1)
@@ -46,6 +50,53 @@ void commandHandler()
         else if(strcmp(currentCommand,"display-date") == 0)
         {
             displayDate(arguments);
+        }
+        
+        else if(strcmp(currentCommand, "suspend") == 0)
+        {
+            struct PCB* toSuspend = findPcb(arguments, readyQueueHead, blockQueueHead);
+            if(toSuspend != NULL)
+            {
+                if(toSuspend->p_state == 1)
+                {
+                    toSuspend->isSuspended = 1;
+                    enqueue(&suspendedReadyHead, &toSuspend);
+                }
+                else if(toSuspend->p_state == 2)
+                {
+                    toSuspend->isSuspended = 1;
+                    enqueue(&suspendedBlockHead, &toSuspend);
+                }
+            }
+            else
+            {
+                red();
+                printf("Currently no queued process by that name\n");
+                reset();
+            }
+        }
+        else if(strcmp(currentCommand, "resume") == 0)
+        {
+            struct PCB* unsuspend = findPcb(arguments, suspendedReadyHead, suspendedBlockHead);
+            if(unsuspend != NULL)
+            {
+                if(unsuspend->p_state ==1)
+                {
+                    unsuspend->isSuspended = 0;
+                    enqueuePriority(&readyQueueHead, &unsuspend);
+                }
+                else if(unsuspend->p_state ==2)
+                {
+                    unsuspend->isSuspended = 0;
+                    enqueue(&blockQueueHead, &unsuspend);
+                }
+            }
+            else
+            {
+                red();
+                printf("Currenlty no suspended process by that name\n");
+                reset();
+            }
         }
         else if(strcmp(currentCommand,"exit") == 0)
         {
