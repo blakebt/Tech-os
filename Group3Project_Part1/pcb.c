@@ -103,27 +103,125 @@ void showPCB(char name[MAX_COMMAND], struct PCB* readyQueue, struct PCB* blockQu
     }
     if(displayable != 0)
     {
-        printf("Name: %s\n", displayable->p_name);
-        if(displayable->p_class == 0)
-            printf("Class: Application\n");
-        else
-            printf("Class: System\n");
-        if(displayable->p_state == 1)
-            printf("State: Ready\n");
-        else if(displayable->p_state == 2)
-            printf("State: Blocked\n");
-        else    
-            printf("State: Running\n");
-        if(displayable->isSuspended == 1)
-            printf("Currently Suspended\n");
-        else
-            printf("Currently Not Suspended\n");
-        printf("Priority: %d", displayable->p_priority);
+        outputPCBInfo(displayable);
     }
     else
     {
         printf("Process not found\n");
     }
+}
+
+void outputPCBInfo(struct PCB* displayable) //actually prints out different info for the processes
+{
+    printf("Name: %s\n", displayable->p_name);
+    if(displayable->p_class == 0)
+        printf("Class: Application\n");
+    else
+        printf("Class: System\n");
+    if(displayable->p_state == 1)
+        printf("State: Ready\n");
+    else if(displayable->p_state == 2)
+        printf("State: Blocked\n");
+    else    
+        printf("State: Running\n");
+    if(displayable->isSuspended == 1)
+        printf("Currently Suspended\n");
+    else
+        printf("Currently Not Suspended\n");
+    printf("Priority: %d", displayable->p_priority);
+}
+
+void showQueuePCB(struct PCB* head)
+{
+    printf("\n");
+    while(head != NULL)
+    {
+        printf("\n");
+        outputPCBInfo(head);
+        head = head->next;
+    }
+    printf("\n");
+}
+
+void showAllPCB(struct PCB* readyHead, struct PCB* blockHead)
+{
+    showQueuePCB(readyHead);
+    showQueuePCB(blockHead);
+}
+
+void createPCB(char arguments[], char argument2[], char argument3[], struct PCB* readyQueueHead, struct PCB* blockQueueHead, struct PCB* suspendedReadyHead, struct PCB* suspendedBlockHead)
+{
+    if(findPcb(arguments, readyQueueHead, blockQueueHead) == NULL && findPcb(arguments, suspendedReadyHead, suspendedBlockHead) == NULL)
+    {
+        int class = atoi(argument2);
+        int priority = atoi(argument3);
+        setupPCB(arguments, class, priority);
+    }
+    else
+    {
+        printf("A process by that name already exists");    
+    }
+}
+
+void deletePCB(char name[], struct PCB* readyQueueHead, struct PCB* blockQueueHead, struct PCB* suspendedReadyHead, struct PCB* suspendedBlockHead)
+{
+    struct PCB* toRemove = findPcb(name, readyQueueHead, blockQueueHead);
+    if(toRemove == NULL)
+    {
+        toRemove = findPcb(name, suspendedReadyHead, suspendedBlockHead);
+        if(toRemove == NULL)
+            removePcb(toRemove, suspendedReadyHead, suspendedBlockHead);
+    }
+    else
+        removePcb(toRemove, readyQueueHead, blockQueueHead);
+    if(toRemove != NULL)
+    {
+        freePCB(toRemove);
+    }
+    else
+    {
+        printf("Process by that name unfound\n");
+    }
+}
+
+void blockPCB(char name[], struct PCB* readyQueue, struct PCB* readySuspend, struct PCB* blockQueue, struct PCB* blockSuspend)
+{
+    struct PCB* toBlock = findPcb(name, readyQueue, readySuspend);
+    if(toBlock != NULL)
+    {
+        toBlock->p_state = 2;
+        removePcb(toBlock, readyQueue, readySuspend);
+        if(toBlock->isSuspended == 0)
+        {
+            enqueue(&blockQueue, &toBlock);
+        }
+        else
+        {
+            enqueue(&blockSuspend, &toBlock);
+        }
+    }
+    else
+        printf("No process ready by that name\n");
+}
+
+void unblockPCB(char name[], struct PCB* readyQueue, struct PCB* readySuspend, struct PCB* blockQueue, struct PCB* blockSuspend)
+{
+    struct PCB* unblock = findPcb(name, blockQueue, blockSuspend);
+    if(unblock != NULL)
+    {
+        unblock->p_state = 1;
+        removePcb(unblock, blockQueue, blockSuspend);
+        if(unblock->isSuspended == 0)
+        {
+            enqueuePriority(&readyQueue, &unblock);
+        }
+        else
+        {
+            enqueue(&readySuspend, &unblock);
+        }
+    }
+    else
+        printf("No process blocked with that name\n");
 }
 
 // struct Pcb

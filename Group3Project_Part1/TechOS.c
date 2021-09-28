@@ -12,6 +12,7 @@ void commandHandler()
     char currentCommand[MAX_COMMAND];
     char arguments[MAX_COMMAND];
     char argument2[MAX_COMMAND];
+    char argument3[MAX_COMMAND];
     struct PCB* readyQueueHead = NULL;
     struct PCB* blockQueueHead = NULL;
     struct PCB* suspendedReadyHead = NULL;
@@ -28,7 +29,7 @@ void commandHandler()
         printf("> ");
         reset();
         fgets(line, MAX_LINE, stdin);
-        sscanf(line, "%s %s %s", currentCommand, arguments, argument2);
+        sscanf(line, "%s %s %s %s", currentCommand, arguments, argument2, argument3);
 
 
         // command handler code
@@ -69,6 +70,36 @@ void commandHandler()
         {
             showPCB(arguments, readyQueueHead, blockQueueHead, suspendedReadyHead, suspendedBlockHead);
         }
+        else if(strcmp(currentCommand, "show-ready-processes") == 0)
+        {
+            showQueuePCB(readyQueueHead);
+        }
+        else if(strcmp(currentCommand, "show-blocked-processes") == 0)
+        {
+            showQueuePCB(blockQueueHead);
+        }
+        else if(strcmp(currentCommand, "show-processes") == 0)
+        {
+            showAllPCB(readyQueueHead, blockQueueHead);
+        }
+        //The following until the next lone line coment are only temporary
+        else if(strcmp(currentCommand, "create-pcb") == 0) 
+        {
+            createPCB(arguments, argument2, argument3, readyQueueHead, blockQueueHead, suspendedReadyHead, suspendedBlockHead);
+        }
+        else if(strcmp(arguments, "delete-pcb") == 0)
+        {
+            deletePCB(arguments, readyQueueHead, blockQueueHead, suspendedReadyHead, suspendedBlockHead);
+        }
+        else if(strcmp(currentCommand, "block-pcb") == 0)
+        {
+            blockPCB(arguments, readyQueueHead, suspendedReadyHead, blockQueueHead, suspendedBlockHead);
+        }
+        else if(strcmp(currentCommand, "unblock-pcb") == 0)
+        {
+            unblockPCB(arguments, readyQueueHead, suspendedReadyHead, blockQueueHead, suspendedBlockHead);
+        }
+        //end of the temporary commands
         else if(strcmp(currentCommand,"exit") == 0)
         {
             // confirm that the user wishes to exit
