@@ -85,12 +85,16 @@ void setPriority(char name[MAX_COMMAND], char priority[MAX_COMMAND], struct PCB*
         }
         else
         {
+            red();
             printf("Process not found\n");
+            reset();
         }
     }
     else
     {
+        red();
         printf("Priority out of bounds\n");
+        reset();
     }
 }
 
@@ -127,7 +131,9 @@ void showPCB(char name[MAX_COMMAND], struct PCB* readyQueue, struct PCB* blockQu
     }
     else
     {
+        red();
         printf("Process not found\n");
+        reset();
     }
 }
 
@@ -165,11 +171,15 @@ void createPCB(char arguments[], char argument2[], char argument3[], struct PCB*
         }
         else
         {
-            printf("A process by that name already exists\n");    
+            red();
+            printf("A process by that name already exists\n");
+            reset();
         }
     }
     else{
+        red();
         printf("Invalid arguments, requires arguments [Name] [Class (0/1)] [Priority (0-9)]\n");
+        reset();
     }
 }
 
@@ -190,7 +200,9 @@ void deletePCB(char name[], struct PCB* readyQueueHead, struct PCB* blockQueueHe
     }
     else
     {
+        red();
         printf("Process by that name unfound\n");
+        reset();
     }
 }
 
@@ -211,7 +223,11 @@ void blockPCB(char name[], struct PCB* readyQueue, struct PCB* readySuspend, str
         }
     }
     else
+    {
+        red();
         printf("No process ready by that name\n");
+        reset();
+    }
 }
 
 void unblockPCB(char name[], struct PCB* readyQueue, struct PCB* readySuspend, struct PCB* blockQueue, struct PCB* blockSuspend)
@@ -231,7 +247,11 @@ void unblockPCB(char name[], struct PCB* readyQueue, struct PCB* readySuspend, s
         }
     }
     else
+    {
+        red();
         printf("No process blocked with that name\n");
+        reset();
+    }
 }
 
 // struct Pcb
