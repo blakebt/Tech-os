@@ -94,23 +94,6 @@ void setPriority(char name[MAX_COMMAND], char priority[MAX_COMMAND], struct PCB*
     }
 }
 
-void showPCB(char name[MAX_COMMAND], struct PCB* readyQueue, struct PCB* blockQueue, struct PCB* readySuspend, struct PCB* blockSuspend)
-{
-    struct PCB* displayable = findPcb(name, readyQueue, blockQueue);
-    if(displayable == NULL)
-    {
-        displayable = findPcb(name, readySuspend, blockSuspend);
-    }
-    if(displayable != 0)
-    {
-        outputPCBInfo(displayable);
-    }
-    else
-    {
-        printf("Process not found\n");
-    }
-}
-
 void outputPCBInfo(struct PCB* displayable) //actually prints out different info for the processes
 {
     printf("Name: %s\n", displayable->p_name);
@@ -129,6 +112,23 @@ void outputPCBInfo(struct PCB* displayable) //actually prints out different info
     else
         printf("Currently Not Suspended\n");
     printf("Priority: %d", displayable->p_priority);
+}
+
+void showPCB(char name[MAX_COMMAND], struct PCB* readyQueue, struct PCB* blockQueue, struct PCB* readySuspend, struct PCB* blockSuspend)
+{
+    struct PCB* displayable = findPcb(name, readyQueue, blockQueue);
+    if(displayable == NULL)
+    {
+        displayable = findPcb(name, readySuspend, blockSuspend);
+    }
+    if(displayable != 0)
+    {
+        outputPCBInfo(displayable);
+    }
+    else
+    {
+        printf("Process not found\n");
+    }
 }
 
 void showQueuePCB(struct PCB* head)
@@ -151,15 +151,21 @@ void showAllPCB(struct PCB* readyHead, struct PCB* blockHead)
 
 void createPCB(char arguments[], char argument2[], char argument3[], struct PCB* readyQueueHead, struct PCB* blockQueueHead, struct PCB* suspendedReadyHead, struct PCB* suspendedBlockHead)
 {
-    if(findPcb(arguments, readyQueueHead, blockQueueHead) == NULL && findPcb(arguments, suspendedReadyHead, suspendedBlockHead) == NULL)
+    if(strcmp(arguments, "") != 0 && strcmp(argument2, "") != 0 && strcmp(argument3, "") != 0)
     {
-        int class = atoi(argument2);
-        int priority = atoi(argument3);
-        setupPCB(arguments, class, priority);
+        if(findPcb(arguments, readyQueueHead, blockQueueHead) == NULL && findPcb(arguments, suspendedReadyHead, suspendedBlockHead) == NULL)
+        {
+            int class = atoi(argument2);
+            int priority = atoi(argument3);
+            setupPCB(arguments, class, priority);
+        }
+        else
+        {
+            printf("A process by that name already exists");    
+        }
     }
-    else
-    {
-        printf("A process by that name already exists");    
+    else{
+        printf("Invalid arguments, requires arguments [Name] [Class (0/1)] [Priority (0-9)]\n");
     }
 }
 
