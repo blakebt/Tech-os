@@ -13,10 +13,10 @@ void commandHandler()
     char arguments[MAX_COMMAND];
     char argument2[MAX_COMMAND];
     char argument3[MAX_COMMAND];
-    struct PCB* readyQueueHead = NULL;
-    struct PCB* blockQueueHead = NULL;
-    struct PCB* suspendedReadyHead = NULL;
-    struct PCB* suspendedBlockHead = NULL;
+    struct PCB* readyQueueHead = setupPCB("readyHead", 0, 0);
+    struct PCB* blockQueueHead = setupPCB("blockHead", 0, 0);
+    struct PCB* suspendedReadyHead = setupPCB("susReadyHead", 0, 0);
+    struct PCB* suspendedBlockHead = setupPCB("susBlockHead", 0, 0);
     printWelcome();
 
     while(1)
@@ -30,7 +30,6 @@ void commandHandler()
         reset();
         fgets(line, MAX_LINE, stdin);
         sscanf(line, "%s %s %s %s", currentCommand, arguments, argument2, argument3);
-
 
         // command handler code
         if(strcmp(currentCommand,"help") == 0)
@@ -87,7 +86,7 @@ void commandHandler()
         {
             createPCB(arguments, argument2, argument3, readyQueueHead, blockQueueHead, suspendedReadyHead, suspendedBlockHead);
         }
-        else if(strcmp(arguments, "delete-pcb") == 0)
+        else if(strcmp(currentCommand, "delete-pcb") == 0)
         {
             deletePCB(arguments, readyQueueHead, blockQueueHead, suspendedReadyHead, suspendedBlockHead);
         }
@@ -124,6 +123,11 @@ void commandHandler()
             printf("Invalid command entered\n");
             reset();
         }
+
+        strcpy(currentCommand, "");
+        strcpy(arguments, "");
+        strcpy(argument2, "");
+        strcpy(argument3, "");
     }
 }
 

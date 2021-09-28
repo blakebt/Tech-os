@@ -111,7 +111,7 @@ void outputPCBInfo(struct PCB* displayable) //actually prints out different info
         printf("Currently Suspended\n");
     else
         printf("Currently Not Suspended\n");
-    printf("Priority: %d", displayable->p_priority);
+    printf("Priority: %d\n", displayable->p_priority);
 }
 
 void showPCB(char name[MAX_COMMAND], struct PCB* readyQueue, struct PCB* blockQueue, struct PCB* readySuspend, struct PCB* blockSuspend)
@@ -134,6 +134,7 @@ void showPCB(char name[MAX_COMMAND], struct PCB* readyQueue, struct PCB* blockQu
 void showQueuePCB(struct PCB* head)
 {
     printf("\n");
+    head = head->next; // skip the head node
     while(head != NULL)
     {
         printf("\n");
@@ -147,6 +148,7 @@ void showAllPCB(struct PCB* readyHead, struct PCB* blockHead)
 {
     showQueuePCB(readyHead);
     showQueuePCB(blockHead);
+    printf("\n");
 }
 
 void createPCB(char arguments[], char argument2[], char argument3[], struct PCB* readyQueueHead, struct PCB* blockQueueHead, struct PCB* suspendedReadyHead, struct PCB* suspendedBlockHead)
@@ -157,11 +159,13 @@ void createPCB(char arguments[], char argument2[], char argument3[], struct PCB*
         {
             int class = atoi(argument2);
             int priority = atoi(argument3);
-            setupPCB(arguments, class, priority);
+            struct PCB* newProcess = setupPCB(arguments, class, priority);
+            insertPcb(newProcess, readyQueueHead, blockQueueHead);
+            printf("Process entered into the ready queue\n");
         }
         else
         {
-            printf("A process by that name already exists");    
+            printf("A process by that name already exists\n");    
         }
     }
     else{
