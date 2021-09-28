@@ -211,8 +211,8 @@ void blockPCB(char name[], struct PCB* readyQueue, struct PCB* readySuspend, str
     struct PCB* toBlock = findPcb(name, readyQueue, readySuspend);
     if(toBlock != NULL)
     {
-        toBlock->p_state = 2;
         removePcb(toBlock, readyQueue, readySuspend);
+        toBlock->p_state = 2;
         if(toBlock->isSuspended == 0)
         {
             enqueue(&blockQueue, &toBlock);
@@ -423,7 +423,7 @@ int removePcb(struct PCB* toPull, struct PCB* readyHead, struct PCB* blockHead) 
     }
     else
     {
-        if(readyHead != NULL && toPull->p_state ==1)
+        if(readyHead != NULL && toPull->p_state == 1)
         {
             struct PCB* current = readyHead;
             while(current->next != NULL)
