@@ -460,7 +460,7 @@ int removePcb(struct PCB* toPull, struct PCB* readyHead, struct PCB* blockHead) 
     return 0;
 }
 
-void removePcbBlocked(struct PCB* toPull, struct PCB* blockHead, struct PCB* susBlockHead)
+int removePcbBlocked(struct PCB* toPull, struct PCB* blockHead, struct PCB* susBlockHead)
 {
    
     if(susBlockHead != NULL && toPull->isSuspended == 1 && strcmp(toPull->p_name, susBlockHead->p_name) == 0)
