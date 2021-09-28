@@ -20,11 +20,13 @@ void suspend(char arguments[MAX_COMMAND], struct PCB* readyQueueHead, struct PCB
         if(toSuspend->p_state == 1)
         {
             toSuspend->isSuspended = 1;
+            toSuspend->next = NULL;
             enqueuePriority(&suspendReadyHead, &toSuspend);
         }
         else if(toSuspend->p_state == 2)
         {
             toSuspend->isSuspended = 1;
+            toSuspend->next = NULL;
             enqueue(&suspendBlockHead, &toSuspend);
         }
     }
@@ -44,11 +46,13 @@ void resume(char arguments[MAX_COMMAND], struct PCB* readyQueueHead, struct PCB*
         if(unsuspend->p_state ==1)
         {
             unsuspend->isSuspended = 0;
+            unsuspend->next = NULL;
             enqueuePriority(&readyQueueHead, &unsuspend);
         }
         else if(unsuspend->p_state ==2)
         {
             unsuspend->isSuspended = 0;
+            unsuspend->next = NULL;
             enqueue(&blockQueueHead, &unsuspend);
         }
     }
@@ -215,10 +219,12 @@ void blockPCB(char name[], struct PCB* readyQueue, struct PCB* readySuspend, str
         removePcb(toBlock, readyQueue, readySuspend);
         if(toBlock->isSuspended == 0)
         {
+            toBlock->next = NULL;
             enqueue(&blockQueue, &toBlock);
         }
         else
         {
+            toBlock->next = NULL;
             enqueue(&blockSuspend, &toBlock);
         }
     }
@@ -239,10 +245,12 @@ void unblockPCB(char name[], struct PCB* readyQueue, struct PCB* readySuspend, s
         unblock->p_state = 1;
         if(unblock->isSuspended == 0)
         {
+            unblock->next = NULL;
             enqueuePriority(&readyQueue, &unblock);
         }
         else
         {
+            unblock->next = NULL;
             enqueue(&readySuspend, &unblock);
         }
     }
