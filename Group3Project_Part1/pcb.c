@@ -211,8 +211,8 @@ void blockPCB(char name[], struct PCB* readyQueue, struct PCB* readySuspend, str
     struct PCB* toBlock = findPcb(name, readyQueue, readySuspend);
     if(toBlock != NULL)
     {
-        removePcb(toBlock, readyQueue, readySuspend);
         toBlock->p_state = 2;
+        removePcb(toBlock, readyQueue, readySuspend);
         if(toBlock->isSuspended == 0)
         {
             enqueue(&blockQueue, &toBlock);
