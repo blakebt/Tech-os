@@ -235,8 +235,8 @@ void unblockPCB(char name[], struct PCB* readyQueue, struct PCB* readySuspend, s
     struct PCB* unblock = findPcb(name, blockQueue, blockSuspend);
     if(unblock != NULL)
     {
-        unblock->p_state = 1;
         removePcb(unblock, blockQueue, blockSuspend);
+        unblock->p_state = 1;
         if(unblock->isSuspended == 0)
         {
             enqueuePriority(&readyQueue, &unblock);
