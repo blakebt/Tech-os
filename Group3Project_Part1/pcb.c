@@ -20,7 +20,7 @@ void suspend(char arguments[MAX_COMMAND], struct PCB* readyQueueHead, struct PCB
         if(toSuspend->p_state == 1)
         {
             toSuspend->isSuspended = 1;
-            enqueue(&suspendReadyHead, &toSuspend);
+            enqueuePriority(&suspendReadyHead, &toSuspend);
         }
         else if(toSuspend->p_state == 2)
         {
