@@ -215,8 +215,8 @@ void blockPCB(char name[], struct PCB* readyQueue, struct PCB* readySuspend, str
     struct PCB* toBlock = findPcb(name, readyQueue, readySuspend);
     if(toBlock != NULL)
     {
-        toBlock->p_state = 2;
         removePcb(toBlock, readyQueue, readySuspend);
+        toBlock->p_state = 2;
         if(toBlock->isSuspended == 0)
         {
             toBlock->next = NULL;
@@ -241,8 +241,7 @@ void unblockPCB(char name[], struct PCB* readyQueue, struct PCB* readySuspend, s
     struct PCB* unblock = findPcb(name, blockQueue, blockSuspend);
     if(unblock != NULL)
     {
-        removePcb(unblock, blockQueue, blockSuspend);
-        unblock->p_state = 1;
+        removePcbBlocked(unblock, blockQueue, blockSuspend);
         if(unblock->isSuspended == 0)
         {
             unblock->next = NULL;
@@ -253,6 +252,7 @@ void unblockPCB(char name[], struct PCB* readyQueue, struct PCB* readySuspend, s
             unblock->next = NULL;
             enqueue(&readySuspend, &unblock);
         }
+        unblock->p_state = 1;
     }
     else
     {
@@ -459,3 +459,47 @@ int removePcb(struct PCB* toPull, struct PCB* readyHead, struct PCB* blockHead) 
     }
     return 0;
 }
+
+void removePcbBlocked(struct PCB* toPull, struct PCB* blockHead, struct PCB* susBlockHead)
+{
+   
+    if(susBlockHead != NULL && toPull->isSuspended == 1 && strcmp(toPull->p_name, susBlockHead->p_name) == 0)
+    {
+        susBlockHead = toPull->next;
+        return 1;
+    }
+    else if(blockHead != NULL && toPull->isSuspended == 0 && strcmp(toPull->p_name, blockHead->p_name) == 0)
+    {
+        blockHead = toPull->next;
+        return 1;
+    }
+    else
+    {
+        if(susBlockHead != NULL && toPull->isSuspended == 1)
+        {
+            struct PCB* current = susBlockHead;
+            while(current->next != NULL)
+            {
+                current = current->next;
+                if(strcmp(current->next->p_name, toPull->p_name) == 0)
+                {
+                    current->next = toPull->next;
+                }
+            }
+        }
+
+        if(blockHead != NULL && toPull->isSuspended == 0)
+        {
+            struct PCB* current = blockHead;
+            while(current->next != NULL)
+            {
+                current = current->next;
+                if(strcmp(current->next->p_name, toPull->p_name) == 0)
+                {
+                    current->next = toPull->next;
+                }
+            }
+        }
+    }
+    return 0;
+} 
