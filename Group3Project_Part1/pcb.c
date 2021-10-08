@@ -9,7 +9,7 @@ int freePcb(struct PCB* process);
 struct PCB* setupPcb(char* name, int class, int priority);
 struct PCB* findPcb(char pName[MAX_PNAME], struct PCB* readyHead, struct PCB* blockHead);
 void insertPcb(struct PCB* toIn, struct PCB* readyHead, struct PCB* blockHead);
-int removePcb(struct PCB* toPull, struct PCB* readyHead, struct PCB* blockHead);
+int removePcb(struct PCB* toPull, struct PCB* head);
 
 //Commands used in TechOS.c
 void suspend(char arguments[MAX_COMMAND], struct PCB* readyQueueHead, struct PCB* blockQueueHead, struct PCB* suspendReadyHead, struct PCB* suspendBlockHead)
@@ -19,12 +19,14 @@ void suspend(char arguments[MAX_COMMAND], struct PCB* readyQueueHead, struct PCB
     {
         if(toSuspend->p_state == 1)
         {
+            removePcb(toSuspend, readyQueueHead);
             toSuspend->isSuspended = 1;
             toSuspend->next = NULL;
-            enqueuePriority(&suspendReadyHead, &toSuspend);
+            enqueue(&suspendReadyHead, &toSuspend);
         }
         else if(toSuspend->p_state == 2)
         {
+            removePcb(toSuspend, blockQueueHead);
             toSuspend->isSuspended = 1;
             toSuspend->next = NULL;
             enqueue(&suspendBlockHead, &toSuspend);
@@ -45,12 +47,14 @@ void resume(char arguments[MAX_COMMAND], struct PCB* readyQueueHead, struct PCB*
     {
         if(unsuspend->p_state ==1)
         {
+            removePcb(unsuspend, suspendedReadyHead);
             unsuspend->isSuspended = 0;
             unsuspend->next = NULL;
             enqueuePriority(&readyQueueHead, &unsuspend);
         }
         else if(unsuspend->p_state ==2)
         {
+            removePcb(unsuspend, suspendedBlockHead);
             unsuspend->isSuspended = 0;
             unsuspend->next = NULL;
             enqueue(&blockQueueHead, &unsuspend);
@@ -78,7 +82,7 @@ void setPriority(char name[MAX_COMMAND], char priority[MAX_COMMAND], struct PCB*
         {
             if(pChange->p_state == 1 && pChange->isSuspended == 0)
             {
-                removePcb(pChange, readyQueue, blockQueue);
+                removePcb(pChange, readyQueue);
                 pChange->p_priority = newPriority;
                 enqueuePriority(&readyQueue, &pChange);
             }
@@ -169,9 +173,27 @@ void createPCB(char arguments[], char argument2[], char argument3[], struct PCB*
         {
             int class = atoi(argument2);
             int priority = atoi(argument3);
-            struct PCB* newProcess = setupPCB(arguments, class, priority);
-            insertPcb(newProcess, readyQueueHead, blockQueueHead);
-            printf("Process entered into the ready queue\n");
+            if(class == 0 || class == 1)
+            {
+                if(priority >= 0 & priority <= 9)
+                {
+                    struct PCB* newProcess = setupPCB(arguments, class, priority);
+                    insertPcb(newProcess, readyQueueHead, blockQueueHead);
+                    printf("Process entered into the ready queue\n");
+                }
+                else
+                {
+                    red();
+                    printf("Priority must be between 0 and 9, lower numbers are higher priority\n");
+                    reset();
+                }
+            }
+            else
+            {
+                red();
+                printf("Process class requires argument of 0 or 1\n");
+                reset();
+            }
         }
         else
         {
@@ -193,11 +215,31 @@ void deletePCB(char name[], struct PCB* readyQueueHead, struct PCB* blockQueueHe
     if(toRemove == NULL)
     {
         toRemove = findPcb(name, suspendedReadyHead, suspendedBlockHead);
-        if(toRemove == NULL)
-            removePcb(toRemove, suspendedReadyHead, suspendedBlockHead);
+        if(toRemove != NULL)
+        {
+            if(removePcb(toRemove, suspendedReadyHead) == 0)
+            {
+                if(removePcb(toRemove, suspendedBlockHead) == 0)
+                {
+                    red();
+                    printf("Error in queue removal\n");
+                    reset();
+                }
+            }
+        }
     }
     else
-        removePcb(toRemove, readyQueueHead, blockQueueHead);
+    {
+        if(removePcb(toRemove, readyQueueHead) == 0)
+        {
+            if(removePcb(toRemove, blockQueueHead) == 0)
+            {
+                red();
+                printf("Error in queue removal\n");
+                reset();
+            }
+        }
+    }
     if(toRemove != NULL)
     {
         freePCB(toRemove);
@@ -215,7 +257,17 @@ void blockPCB(char name[], struct PCB* readyQueue, struct PCB* readySuspend, str
     struct PCB* toBlock = findPcb(name, readyQueue, readySuspend);
     if(toBlock != NULL)
     {
-        removePcb(toBlock, readyQueue, readySuspend);
+
+        //removePcb(toBlock, readyQueue, readySuspend);
+        if(removePcb(toBlock, readyQueue) == 0)
+        {
+            if(removePcb(toBlock, readySuspend) == 0)
+            {
+                red();
+                printf("There has been an error in queue removal\n");
+                reset();
+            }
+        }
         toBlock->p_state = 2;
         if(toBlock->isSuspended == 0)
         {
@@ -241,7 +293,15 @@ void unblockPCB(char name[], struct PCB* readyQueue, struct PCB* readySuspend, s
     struct PCB* unblock = findPcb(name, blockQueue, blockSuspend);
     if(unblock != NULL)
     {
-        removePcbBlocked(unblock, blockQueue, blockSuspend);
+        if(removePcb(unblock, blockQueue) == 0)
+        {
+            if(removePcb(unblock, blockSuspend) == 0)
+            {
+                red();
+                printf("Error in queue removal\n"); 
+                reset();
+            }
+        }
         if(unblock->isSuspended == 0)
         {
             unblock->next = NULL;
@@ -271,35 +331,6 @@ void unblockPCB(char name[], struct PCB* readyQueue, struct PCB* readySuspend, s
 //     int isSuspended; // 0 = not suspended, 1 = suspended
 //     struct Pcb* next;
 // };
-
-// int main()
-// {
-//     printf("Starting test\n");
-//     struct Node* head = NULL;
-//     char name[MAX_PNAME] = "tester";
-//     struct PCB* p1 = setupPcb(name, 0, 6);
-//     enqueue(head, p1);
-
-//     printf("Created PCB: \n");
-//     printf("Name: %s\n", p1->p_name);
-//     printf("Class: %d\n", p1->p_class);
-//     printf("Priority: %d\n", p1->p_priority);
-//     printf("State: %d\n", p1->p_state);
-//     printf("is it suspended? %d\n", p1->isSuspended);
-
-//     char name2[MAX_PNAME] = "test2";
-//     struct PCB* p2 = setupPcb(name2, 0, 8);
-//     enqueue(head, p2);
-//     char name3[MAX_PNAME] = "randolf";
-//     struct PCB* p3 = setupPcb(name3, 0, 2);
-//     enqueue(head, p3);
-//     char name4[MAX_PNAME] = "Geralt";
-//     struct PCB* p4 = setupPcb(name4, 0, 5);
-//     enqueue(head, p4);
-    
-//     struct PCB* temp = findPcb("randolf", head, head);
-//     printf("%d\n", temp->p_priority);
-// }
 
 struct PCB* allocatePCB()
 {
@@ -417,89 +448,68 @@ void insertPcb(struct PCB* toIn, struct PCB* readyHead, struct PCB* blockHead) /
     }
 }
 
-int removePcb(struct PCB* toPull, struct PCB* readyHead, struct PCB* blockHead) //removes the PCB from it's queue, and returns a success/failure notice of 1/0 respectively
+int removePcb(struct PCB* toPull, struct PCB* head) //removes the PCB from it's queue, and returns a success/failure notice of 1/0 respectively
 {
-    if(readyHead != NULL && toPull->p_state == 1 && strcmp(toPull->p_name, readyHead->p_name) == 0)
+    if(head != NULL && strcmp(toPull->p_name, head->p_name) == 0)
     {
-        readyHead = toPull->next;
+        head = toPull->next;
         return 1;
     }
-    else if(blockHead != NULL && toPull->p_state == 2 && strcmp(toPull->p_name, blockHead->p_name) == 0)
+    else if(head != NULL)
     {
-        blockHead = toPull->next;
-        return 1;
-    }
-    else
-    {
-        if(readyHead != NULL && toPull->p_state == 1)
+        struct PCB* current = head;
+        while(current->next != NULL)
         {
-            struct PCB* current = readyHead;
-            while(current->next != NULL)
+            if(strcmp(current->next->p_name, toPull->p_name) == 0) 
             {
-                current = current->next;
-                if(strcmp(current->next->p_name, toPull->p_name) == 0)
-                {
-                    current->next = toPull->next;
-                }
+                current->next = toPull->next;
+                return 1;
             }
-        }
-
-        if(blockHead != NULL && toPull->p_state == 2)
-        {
-            struct PCB* current = blockHead;
-            while(current->next != NULL)
-            {
-                current = current->next;
-                if(strcmp(current->next->p_name, toPull->p_name) == 0)
-                {
-                    current->next = toPull->next;
-                }
-            }
+            current = current->next;
         }
     }
     return 0;
 }
 
-int removePcbBlocked(struct PCB* toPull, struct PCB* blockHead, struct PCB* susBlockHead)
-{
-   
-    if(susBlockHead != NULL && toPull->isSuspended == 1 && strcmp(toPull->p_name, susBlockHead->p_name) == 0)
-    {
-        susBlockHead = toPull->next;
-        return 1;
-    }
-    else if(blockHead != NULL && toPull->isSuspended == 0 && strcmp(toPull->p_name, blockHead->p_name) == 0)
-    {
-        blockHead = toPull->next;
-        return 1;
-    }
-    else
-    {
-        if(susBlockHead != NULL && toPull->isSuspended == 1)
-        {
-            struct PCB* current = susBlockHead;
-            while(current->next != NULL)
-            {
-                current = current->next;
-                if(strcmp(current->next->p_name, toPull->p_name) == 0)
-                {
-                    current->next = toPull->next;
-                }
-            }
-        }
-
-        if(blockHead != NULL && toPull->isSuspended == 0)
-        {
-            struct PCB* current = blockHead;
-            while(current->next != NULL)
-            {
-                current = current->next;
-                if(strcmp(current->next->p_name, toPull->p_name) == 0)
-                {
-                    current->next = toPull->next;
-                }
-            }
-        }
-    }
-    return 0;
-} 
+//Commented out, will remove if testing with new removePcb function goes well
+// int removePcbBlocked(struct PCB* toPull, struct PCB* blockHead, struct PCB* susBlockHead)
+// {
+//     if(susBlockHead != NULL && toPull->isSuspended == 1 && strcmp(toPull->p_name, susBlockHead->p_name) == 0)
+//     {
+//         susBlockHead = toPull->next;
+//         return 1;
+//     }
+//     else if(blockHead != NULL && toPull->isSuspended == 0 && strcmp(toPull->p_name, blockHead->p_name) == 0)
+//     {
+//         blockHead = toPull->next;
+//         return 1;
+//     }
+//     else
+//     {
+//         if(susBlockHead != NULL && toPull->isSuspended == 1)
+//         {
+//             struct PCB* current = susBlockHead;
+//             while(current->next != NULL)
+//             {
+//                 current = current->next;
+//                 if(strcmp(current->next->p_name, toPull->p_name) == 0)
+//                 {
+//                     current->next = toPull->next;
+//                 }
+//             }
+//         }
+//         if(blockHead != NULL && toPull->isSuspended == 0)
+//         {
+//             struct PCB* current = blockHead;
+//             while(current->next != NULL)
+//             {
+//                 current = current->next;
+//                 if(strcmp(current->next->p_name, toPull->p_name) == 0)
+//                 {
+//                     current->next = toPull->next;
+//                 }
+//             }
+//         }
+//     }
+//     return 0;
+// } 

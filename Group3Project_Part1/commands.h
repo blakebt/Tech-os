@@ -53,8 +53,8 @@ int freePCB(struct PCB* process);
 struct PCB* setupPCB(char* name, int class, int priority);
 struct PCB* findPcb(char pName[MAX_PNAME], struct PCB* readyHead, struct PCB* blockHead);
 void insertPcb(struct PCB* toIn, struct PCB* readyHead, struct PCB* blockHead);
-int removePcb(struct PCB* toPull, struct PCB* readyHead, struct PCB* blockHead);
-int removePcbBlocked(struct PCB* toPull, struct PCB* blockHead, struct PCB* susBlockHead);
+int removePcb(struct PCB* toPull, struct PCB* head);
+//int removePcbBlocked(struct PCB* toPull, struct PCB* blockHead, struct PCB* susBlockHead);
 
 
 #endif

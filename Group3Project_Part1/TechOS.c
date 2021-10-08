@@ -52,7 +52,6 @@ void commandHandler()
         {
             displayDate(arguments);
         }
-        
         else if(strcmp(currentCommand, "suspend") == 0)
         {
             suspend(arguments, readyQueueHead, blockQueueHead, suspendedReadyHead, suspendedBlockHead);
