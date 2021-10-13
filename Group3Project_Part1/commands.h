@@ -22,6 +22,7 @@ struct PCB
 
 void printWelcome();
 void printHelpMenu();
+void showFunctionHelp(char* arguments);
 void showVersion();
 void displayTime(char* arguments);
 void commandHandler();

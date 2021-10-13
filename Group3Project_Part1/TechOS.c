@@ -34,7 +34,7 @@ void commandHandler()
         // command handler code
         if(strcmp(currentCommand,"help") == 0)
         {
-            printHelpMenu();
+            showFunctionHelp(arguments);
         }
         else if(strcmp(currentCommand,"version") == 0)
         {
@@ -128,59 +128,4 @@ void commandHandler()
         strcpy(argument2, "");
         strcpy(argument3, "");
     }
-}
-
-// function to print the welcome message
-void printWelcome()
-{
-    printf("            Welcome to TechOS.\n");
-    printf("Begin entering commands whenever you're ready.\n");
-    printf("If you would like a list of commands, type help.\n\n");
-}
-
-// function to print the list of commands
-void printHelpMenu()
-{
-    FILE *fp;
-
-    fp = fopen("commands.txt","r");
-
-    if(fp != NULL)
-    {
-        printf("\nAvailable commands:\n");
-        printf("-------------------\n");
-        char command[MAX_COMMAND];
-        while(!feof(fp))
-        {
-            fscanf(fp,"%[^,] %s", command);
-            printf(" %s\n", command);
-        }
-        printf("\n");
-    }
-    else
-    {
-        printf("ERROR. Input file is missing");
-    }
-
-    fclose(fp);
-}
-
-// function to print the version information
-void showVersion()
-{
-    FILE *fp;
-
-    fp = fopen("version.txt", "r");
-    char line[128];
-    if(fp != NULL)
-    {
-        printf("\n");
-        while(!feof(fp))
-        {
-            fscanf(fp, "%[^,] %s", line);
-            printf("%s", line);
-        } 
-    }
-    printf("\n\n");
-    fclose(fp);
 }

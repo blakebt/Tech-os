@@ -172,3 +172,157 @@ void reset()
 {
     printf("\033[0m");
 }
+
+// function to print the welcome message
+void printWelcome()
+{
+    printf("\n");
+    printf("            Welcome to TechOS.\n");
+    printf("Begin entering commands whenever you're ready.\n");
+    printf("If you would like a list of commands, type help.\n\n");
+}
+
+// function to print the list of commands
+void printHelpMenu()
+{
+    FILE *fp;
+
+    fp = fopen("commands.txt","r");
+
+    if(fp != NULL)
+    {
+        printf("\nAvailable commands:\n");
+        printf("-------------------\n");
+        char command[MAX_COMMAND];
+        while(!feof(fp))
+        {
+            fscanf(fp,"%[^,] %s", command);
+            printf(" %s\n", command);
+        }
+        printf("\n");
+    }
+    else
+    {
+        printf("ERROR. Input file is missing");
+    }
+
+    fclose(fp);
+}
+
+// function to print the version information
+void showVersion()
+{
+    FILE *fp;
+
+    fp = fopen("version.txt", "r");
+    char line[128];
+    if(fp != NULL)
+    {
+        printf("\n");
+        while(!feof(fp))
+        {
+            fscanf(fp, "%[^,] %s", line);
+            printf("%s", line);
+        } 
+    }
+    printf("\n\n");
+    fclose(fp);
+}
+
+void showFunctionHelp(char* arguments)
+{
+    if(strcmp(arguments, "version") == 0)
+    {
+        blue();
+        printf("\nversion ");
+        reset();
+        printf("displays the current version of TechOS.\n\n");
+        printf("Example of command:\n");
+        printf("version\n\n");
+    }
+    else if(strcmp(arguments, "display-date") == 0)
+    {
+        blue();
+        printf("\ndisplay-date ");
+        reset();
+        printf("displays the current date in MM-DD-YYYY formt.\n\n");
+        printf("Example of command:\n");
+        printf("display-date\n\n");
+    }
+    else if(strcmp(arguments, "change-date") == 0)
+    {
+        blue();
+        printf("\nchange-date ");
+        reset();
+        printf("allows for the system date to be changed.\n New date must be entered in MM-DD-YYYY format\n\n");
+        printf("Example of command:\n");
+        printf("change-date MM-DD-YYYY\n\n");
+    }
+    else if(strcmp(arguments, "display-time") == 0)
+    {
+        blue();
+        printf("\ndisplay-time ");
+        reset();
+        printf("displays the current system time in 12 hour or 24 hour format.\n Enter 12 as the argument to recieve the time in 12 hour format.\n\n");
+        printf("Example of command:\n");
+        printf("display-time 12\n\n");
+    }
+    else if(strcmp(arguments, "suspend") == 0)
+    {
+        blue();
+        printf("\nsuspend ");
+        reset();
+        printf("will suspend a process and insert the process into the suspended ready queue or suspended block queue depending on it's blocked status.\n\n");
+        printf("Example of command:\n");
+        printf("suspend [process name]\n\n");
+    }
+    else if(strcmp(arguments, "resume") == 0)
+    {
+        blue();
+        printf("\nresume ");
+        reset();
+        printf("will resume a suspended process, remove the process from the suspened ready/block queue, and insert the process into it's respective queue.\n\n");
+        printf("Example of command:\n");
+        printf("resume [process name]\n\n");
+    }
+    else if(strcmp(arguments, "set-priority") == 0)
+    {
+        blue();
+        printf("\nset-priority ");
+        reset();
+        printf("will set the priority of a process to the provided priority.\n\n");
+        printf("Example of command:\n");
+        printf("set-priority [process name] [new priority]\n\n");
+    }
+    else if(strcmp(arguments, "show-pcb") == 0)
+    {
+        blue();
+        printf("\nshow-pcb ");
+        reset();
+        printf("shows the status information about the chosen process.\n\n");
+        printf("Example of command:\n");
+        printf("show-pcb [process name]\n\n");
+    }
+    else if(strcmp(arguments, "show-ready-processes") == 0)
+    {
+        blue();
+        printf("\nshow-ready-processes ");
+        reset();
+        printf("shows all the processes in the ready queue.\n\n");
+        printf("Example of command:\n");
+        printf("show-ready-processes\n\n");
+    }
+    else if(strcmp(arguments, "show-blocked-processes") == 0)
+    {
+        blue();
+        printf("\nshow-blocked-processes ");
+        reset();
+        printf("shows ll the processes in the blocked queue.\n\n");
+        printf("Example of command:\n");
+        printf("show-blocked-processes\n\n");
+    }
+    else
+    {
+        printHelpMenu();
+    }
+}
