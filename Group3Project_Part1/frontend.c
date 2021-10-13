@@ -1,3 +1,7 @@
+/*
+File for all front end functions
+*/
+
 #include "commands.h"
 
 //this function will require an argument in the form MM-DD-YYYY, EX "changeDate 11 20, 2013" would change the date to November 20, 2013
@@ -82,4 +86,89 @@ void changeDate(char* arguments)
             reset();
         }
         }
+}
+
+// function to display time in either 12 hour format or 24 hour format
+void displayTime(char* arguments)
+{
+    time_t rawTime;
+    struct tm* timeInfo;
+
+    time(&rawTime);
+    timeInfo = localtime (&rawTime);
+
+    if(strcmp(arguments,"12") == 0 && timeInfo->tm_hour > 12)
+    {
+        timeInfo->tm_hour = timeInfo->tm_hour - 12;
+        printf("The current time is: %d:%d:%d\n", timeInfo->tm_hour, timeInfo->tm_min, timeInfo->tm_sec);
+    }
+    else
+    {
+        printf("The current time is: %d:%d:%d\n", timeInfo->tm_hour, timeInfo->tm_min, timeInfo->tm_sec);
+    }
+
+}
+
+//function to display the current date
+void displayDate(char* arguments)
+{
+    time_t timeData;
+    time(&timeData);
+    struct tm* currentDate;
+    currentDate = localtime(&timeData);
+    // struct tm* changedDate;
+    char dayOfWeek[10], day[3], month[10], year[5], changedDate[26];
+    int changedMonth, changedDay, changedYear;
+    int actualMonth, actualDay, actualYear;
+    FILE* fPtr;
+
+    if(strcmp(arguments, "help") == 0)
+    {
+        printf("\nThe display-date command displays the current system time in MM-DD-YYYY format\n");
+        printf("\nExample format: display-date\n\n");
+    }
+    else
+    {
+        if(fPtr = fopen("sysDate.txt","r"))
+        {
+            fgets(changedDate, 26, fPtr);
+            sscanf(changedDate, "%d %d %d %d %d %d", &changedMonth, &changedDay, &changedYear, &actualMonth, &actualDay, &actualYear);
+
+            currentDate->tm_mon = actualMonth - 1;
+            currentDate->tm_mday = actualDay;
+            currentDate->tm_year = actualYear - 1900;
+
+            strftime(month, 10,"%B", currentDate);
+            strftime(day, 3, "%d", currentDate);
+            strftime(year ,5, "%Y", currentDate);
+        }
+        else
+        {
+            strftime(month, 10, "%B", currentDate);
+            strftime(day, 3, "%d", currentDate);
+            strftime(year, 5, "%Y", currentDate);
+        }
+        printf("The current date is: %s %s, %s\n", month,day,year);
+    }
+}
+
+// functions for changing the color of text in the system
+void red()
+{
+    printf("\033[1;31m");
+}
+
+void blue()
+{
+    printf("\033[0;34m");
+}
+
+void green()
+{
+    printf("\033[0;32m");
+}
+
+void reset()
+{
+    printf("\033[0m");
 }
