@@ -229,6 +229,7 @@ void showVersion()
     fclose(fp);
 }
 
+// function to handle help functionality for all commands
 void showFunctionHelp(char* arguments)
 {
     if(strcmp(arguments, "version") == 0)

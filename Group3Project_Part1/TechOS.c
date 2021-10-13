@@ -80,24 +80,6 @@ void commandHandler()
         {
             showAllPCB(readyQueueHead, blockQueueHead);
         }
-        //The following until the next lone line coment are only temporary
-        else if(strcmp(currentCommand, "create-pcb") == 0) 
-        {
-            createPCB(arguments, argument2, argument3, readyQueueHead, blockQueueHead, suspendedReadyHead, suspendedBlockHead);
-        }
-        else if(strcmp(currentCommand, "delete-pcb") == 0)
-        {
-            deletePCB(arguments, readyQueueHead, blockQueueHead, suspendedReadyHead, suspendedBlockHead);
-        }
-        else if(strcmp(currentCommand, "block-pcb") == 0)
-        {
-            blockPCB(arguments, readyQueueHead, suspendedReadyHead, blockQueueHead, suspendedBlockHead);
-        }
-        else if(strcmp(currentCommand, "unblock-pcb") == 0)
-        {
-            unblockPCB(arguments, readyQueueHead, suspendedReadyHead, blockQueueHead, suspendedBlockHead);
-        }
-        //end of the temporary commands
         else if(strcmp(currentCommand,"exit") == 0)
         {
             // confirm that the user wishes to exit
