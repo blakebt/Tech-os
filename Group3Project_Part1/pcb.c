@@ -471,6 +471,52 @@ int removePcb(struct PCB* toPull, struct PCB* head) //removes the PCB from it's 
     return 0;
 }
 
+void dispatch(char name[], struct PCB* readyQueueHead, struct PCB* blockQueueHead, struct PCB* suspendedReadyHead, struct PCB* suspendedBlockHead)
+{
+    struct PCB* current = readyQueueHead;
+    char fileName[MAX_PNAME];
+    char executeCommand[] = "./execute ";
+    int lock;
+
+    if(current == NULL)//Displays error message if ready queue is empty
+    {
+        red();
+        printf("Error. Ready Queue is empty\n");
+        reset();
+    }
+    else
+    {
+        strcpy(current->p_data, fileName);//Copy process file path and offset
+        strcat(executeCommand, fileName);//Concatenates both strings to have full command: "./execute filename+offset"
+        lock = system(executeCommand);//System will return 0 if process is done executing
+        current->p_state = 0;//Set dispatched process to running
+
+        while(current->next != NULL)
+        {
+            if(lock == 0)//lock does not allow another process to be dispatched until current running process is finished
+            {
+                memset(executeCommand, 0, sizeof executeCommand);//Just in case executeCommand needs to be reset so new file path can be added
+                char executeCommand[] = "./execute ";
+                
+                //Displays message that process completed execution, then delete it.
+                printf("Process %s is done.\n", current->p_name);
+                deletePCB(current->p_name, readyQueueHead, blockQueueHead, suspendedReadyHead, suspendedBlockHead);
+
+                //Go to next process in ready queue
+                current = current->next;
+                strcpy(current->p_data, fileName);
+                strcat(executeCommand, fileName);
+
+                //Use system to execute process
+                lock = system(executeCommand);
+                current->p_state = 0;
+            }   
+
+        }
+    }
+    //Make sure the execution order is correct?
+}
+
 //Commented out, will remove if testing with new removePcb function goes well
 // int removePcbBlocked(struct PCB* toPull, struct PCB* blockHead, struct PCB* susBlockHead)
 // {
