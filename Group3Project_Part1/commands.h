@@ -13,6 +13,8 @@
 struct PCB
 {
     char p_name[MAX_PNAME];
+    char p_data[MAX_LINE];//Holds path 
+    int offset; //contains the process's offset in case of blocking/suspending 
     int p_class; //0 = application, 1 = system
     int p_priority; // 0-9
     int p_state; //0 = running, 1 = ready, 2 = blocked
@@ -55,6 +57,7 @@ struct PCB* setupPCB(char* name, int class, int priority);
 struct PCB* findPcb(char pName[MAX_PNAME], struct PCB* readyHead, struct PCB* blockHead);
 void insertPcb(struct PCB* toIn, struct PCB* readyHead, struct PCB* blockHead);
 int removePcb(struct PCB* toPull, struct PCB* head);
+void dispatch(char name[], struct PCB* readyQueueHead, struct PCB* blockQueueHead, struct PCB* suspendedReadyHead, struct PCB* suspendedBlockHead);
 //int removePcbBlocked(struct PCB* toPull, struct PCB* blockHead, struct PCB* susBlockHead);
 
 
