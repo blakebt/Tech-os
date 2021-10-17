@@ -17,6 +17,8 @@ struct PCB
     int p_priority; // 0-9
     int p_state; //0 = running, 1 = ready, 2 = blocked
     int isSuspended; // 0 = not suspended, 1 = suspended
+    char p_path[MAX_LINE]; // file path for the process
+    int offset; // offset for the process
     struct PCB* next;
 };
 
