@@ -124,6 +124,7 @@ void outputPCBInfo(struct PCB* displayable) //actually prints out different info
     else
         printf("Currently Not Suspended\n");
     printf("Priority: %d\n", displayable->p_priority);
+    printf("File: %s\n", displayable->p_data);
 }
 
 void showPCB(char name[MAX_COMMAND], struct PCB* readyQueue, struct PCB* blockQueue, struct PCB* readySuspend, struct PCB* blockSuspend)
