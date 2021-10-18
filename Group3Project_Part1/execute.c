@@ -1,5 +1,6 @@
 #include <stdio.h>
-#include <unistd.h>
+//#include <unistd.h>
+#include <io.h>//Might be the work around on Windows
 #include <stdlib.h>
 #include <sys/types.h>
 #include <string.h>
