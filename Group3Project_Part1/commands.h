@@ -59,6 +59,8 @@ struct PCB* findPcb(char pName[MAX_PNAME], struct PCB* readyHead, struct PCB* bl
 void insertPcb(struct PCB* toIn, struct PCB* readyHead, struct PCB* blockHead);
 int removePcb(struct PCB* toPull, struct PCB* head);
 void dispatch(char name[], struct PCB* readyQueueHead, struct PCB* blockQueueHead, struct PCB* suspendedReadyHead, struct PCB* suspendedBlockHead);
+void interupt_handler(int interupt_val, struct PCB* process,  struct PCB* readyQueueHead, struct PCB* blockQueueHead, struct PCB* suspendReadyHead, struct PCB* suspendBlockHead);
+void reintegrater( struct PCB* readyQueueHead, struct PCB* blockQueueHead, struct PCB* suspendReadyHead, struct PCB* suspendBlockHead);
 //int removePcbBlocked(struct PCB* toPull, struct PCB* blockHead, struct PCB* susBlockHead);
 void loadPCB(char pName[], char class[], char priority[], char filePath[], struct PCB* readyHead, struct PCB* blockedHead, struct PCB* susReadyHead, struct PCB* susBlockedHead);
 
