@@ -516,6 +516,7 @@ void dispatch(char name[], struct PCB* readyQueueHead, struct PCB* blockQueueHea
     }
     //Make sure the execution order is correct?
 }
+<<<<<<< HEAD
 
 void loadPCB(char pName[], char class[], char priority[], char filePath[], struct PCB* readyHead, struct PCB* blockedHead, struct PCB* susReadyHead, struct PCB* susBlockedHead)
 {
@@ -587,3 +588,5 @@ void loadPCB(char pName[], char class[], char priority[], char filePath[], struc
 //     }
 //     return 0;
 // } 
+=======
+>>>>>>> 700778263365f8d83047216373e1f0dc960a80f7
