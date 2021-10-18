@@ -60,6 +60,7 @@ void insertPcb(struct PCB* toIn, struct PCB* readyHead, struct PCB* blockHead);
 int removePcb(struct PCB* toPull, struct PCB* head);
 void dispatch(char name[], struct PCB* readyQueueHead, struct PCB* blockQueueHead, struct PCB* suspendedReadyHead, struct PCB* suspendedBlockHead);
 //int removePcbBlocked(struct PCB* toPull, struct PCB* blockHead, struct PCB* susBlockHead);
+void loadPCB(char pName[], char class[], char priority[], char filePath[], struct PCB* readyHead, struct PCB* blockedHead, struct PCB* susReadyHead, struct PCB* susBlockedHead);
 
 
 #endif

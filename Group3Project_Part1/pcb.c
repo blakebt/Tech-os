@@ -517,6 +517,34 @@ void dispatch(char name[], struct PCB* readyQueueHead, struct PCB* blockQueueHea
     //Make sure the execution order is correct?
 }
 
+void loadPCB(char pName[], char class[], char priority[], char filePath[], struct PCB* readyHead, struct PCB* blockedHead, struct PCB* susReadyHead, struct PCB* susBlockedHead)
+{
+    if(findPcb(pName, readyHead, blockedHead) == NULL && findPcb(pName, susReadyHead, susBlockedHead) == NULL)
+    {
+        FILE *file;
+
+        file = fopen(filePath, "r");
+
+        if(file != NULL)
+        {
+            // the process can be inserted
+            int pClass = atoi(class);
+            int pPriority = atoi(priority);
+            struct PCB* toInsert = setupPCB(pName, pClass, pPriority);
+            strcpy(toInsert->p_path, filePath);
+            insertPcb(toInsert, readyHead, blockedHead);
+            printf("\nProcess loaded successfully.\n");
+        }
+        fclose(file);
+    }
+    else
+    {
+        red();
+        printf("\nA process with this name has already been created.\n");
+        reset();
+    }
+}
+
 //Commented out, will remove if testing with new removePcb function goes well
 // int removePcbBlocked(struct PCB* toPull, struct PCB* blockHead, struct PCB* susBlockHead)
 // {
