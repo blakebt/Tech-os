@@ -165,7 +165,7 @@ void showAllPCB(struct PCB* readyHead, struct PCB* blockHead)
     printf("\n");
 }
 
-void createPCB(char arguments[], char argument2[], char argument3[], struct PCB* readyQueueHead, struct PCB* blockQueueHead, struct PCB* suspendedReadyHead, struct PCB* suspendedBlockHead)
+void createPCB(char arguments[], char argument2[], char argument3[], char argument4[], struct PCB* readyQueueHead, struct PCB* blockQueueHead, struct PCB* suspendedReadyHead, struct PCB* suspendedBlockHead)
 {
     if(strcmp(arguments, "") != 0 && strcmp(argument2, "") != 0 && strcmp(argument3, "") != 0)
     {
@@ -177,9 +177,20 @@ void createPCB(char arguments[], char argument2[], char argument3[], struct PCB*
             {
                 if(priority >= 0 & priority <= 9)
                 {
-                    struct PCB* newProcess = setupPCB(arguments, class, priority);
-                    insertPcb(newProcess, readyQueueHead, blockQueueHead);
-                    printf("Process entered into the ready queue\n");
+                    if(access(argument4, F_OK) == 0)
+                    {
+                        struct PCB* newProcess = setupPCB(arguments, class, priority);
+                        strcpy(newProcess->p_data, argument4);
+                        newProcess->offset = 0;
+                        insertPcb(newProcess, readyQueueHead, blockQueueHead);
+                        printf("Process entered into the ready queue\n");
+                    }
+                    else
+                    {
+                        red();
+                        printf("The file name provided does not exist.\n");
+                        reset();
+                    }
                 }
                 else
                 {
@@ -523,29 +534,6 @@ void dispatch(char name[], struct PCB* readyQueueHead, struct PCB* blockQueueHea
         }
     }
     //Make sure the execution order is correct?
-}
-
-void loadPCB(char pName[], char class[], char priority[], char filePath[], struct PCB* readyHead, struct PCB* blockedHead, struct PCB* susReadyHead, struct PCB* susBlockedHead)
-{
-    if(findPcb(pName, readyHead, blockedHead) == NULL && findPcb(pName, susReadyHead, susBlockedHead) == NULL)
-    {
-        if(access(filePath, F_OK) != 0)
-        {
-            // the process can be inserted
-            int pClass = atoi(class);
-            int pPriority = atoi(priority);
-            struct PCB* toInsert = setupPCB(pName, pClass, pPriority);
-            strcpy(toInsert->p_data, filePath);
-            insertPcb(toInsert, readyHead, blockedHead);
-            printf("\nProcess loaded successfully.\n");
-        }
-    }
-    else
-    {
-        red();
-        printf("\nA process with this name has already been created.\n");
-        reset();
-    }
 }
 
 //Commented out, will remove if testing with new removePcb function goes well

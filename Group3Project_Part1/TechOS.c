@@ -14,7 +14,6 @@ void commandHandler()
     char argument2[MAX_COMMAND];
     char argument3[MAX_COMMAND];
     char argument4[MAX_COMMAND];
-    char argument5[MAX_COMMAND];
     struct PCB* readyQueueHead = setupPCB("readyHead", 0, 0);
     struct PCB* blockQueueHead = setupPCB("blockHead", 0, 0);
     struct PCB* suspendedReadyHead = setupPCB("susReadyHead", 0, 0);
@@ -31,7 +30,7 @@ void commandHandler()
         printf("> ");
         reset();
         fgets(line, MAX_LINE, stdin);
-        sscanf(line, "%s %s %s %s %s %s", currentCommand, arguments, argument2, argument3, argument4, argument5);
+        sscanf(line, "%s %s %s %s %s %s", currentCommand, arguments, argument2, argument3, argument4);
 
         // command handler code
         if(strcmp(currentCommand,"help") == 0)
@@ -84,7 +83,7 @@ void commandHandler()
         }
         else if(strcmp(currentCommand, "load-process") == 0)
         {
-            loadPCB(argument2, argument3, argument4, argument5, readyQueueHead, blockQueueHead, suspendedReadyHead, suspendedBlockHead);
+            createPCB(arguments, argument2, argument3, argument4, readyQueueHead, blockQueueHead, suspendedReadyHead, suspendedBlockHead);
         }
         else if(strcmp(currentCommand,"exit") == 0)
         {
@@ -116,6 +115,5 @@ void commandHandler()
         strcpy(argument2, "");
         strcpy(argument3, "");
         strcpy(argument4, "");
-        strcpy(argument5, "");
     }
 }

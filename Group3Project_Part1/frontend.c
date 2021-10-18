@@ -322,6 +322,24 @@ void showFunctionHelp(char* arguments)
         printf("Example of command:\n");
         printf("show-blocked-processes\n\n");
     }
+    else if(strcmp(arguments, "load-process") == 0)
+    {
+        blue();
+        printf("\nload-process ");
+        reset();
+        printf("loads a process into the ready queue.\n\n");
+        printf("Example of command:\n");
+        printf("load-process [name] [class] [priority] [file path]\n\n");
+    }
+    else if(strcmp(arguments, "dispatch") == 0)
+    {
+        blue();
+        printf("\ndispatch ");
+        reset();
+        printf("begins execution of processes in the queues.\n\n");
+        printf("Example of command:\n");
+        printf("dispatch\n\n");
+    }
     else
     {
         printHelpMenu();
