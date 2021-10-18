@@ -13,8 +13,8 @@
 struct PCB
 {
     char p_name[MAX_PNAME];
-    char p_data[MAX_LINE]; //Holds path and offset
-    int offset; //Contains the process's offset in case of blocking/suspending
+    char p_data[MAX_LINE];//Holds path 
+    int offset; //contains the process's offset in case of blocking/suspending 
     int p_class; //0 = application, 1 = system
     int p_priority; // 0-9
     int p_state; //0 = running, 1 = ready, 2 = blocked
