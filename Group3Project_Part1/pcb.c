@@ -167,7 +167,7 @@ void showAllPCB(struct PCB* readyHead, struct PCB* blockHead)
 
 void createPCB(char arguments[], char argument2[], char argument3[], char argument4[], struct PCB* readyQueueHead, struct PCB* blockQueueHead, struct PCB* suspendedReadyHead, struct PCB* suspendedBlockHead)
 {
-    if(strcmp(arguments, "") != 0 && strcmp(argument2, "") != 0 && strcmp(argument3, "") != 0)
+    if(strcmp(arguments, "") != 0 && strcmp(argument2, "") != 0 && strcmp(argument3, "") != 0 && strcmp(argument4, "") != 0)
     {
         if(findPcb(arguments, readyQueueHead, blockQueueHead) == NULL && findPcb(arguments, suspendedReadyHead, suspendedBlockHead) == NULL)
         {
@@ -215,7 +215,7 @@ void createPCB(char arguments[], char argument2[], char argument3[], char argume
     }
     else{
         red();
-        printf("Invalid arguments, requires arguments [Name] [Class (0/1)] [Priority (0-9)]\n");
+        printf("Invalid arguments, requires arguments [Name] [Class (0/1)] [Priority (0-9)] [File Path]\n");
         reset();
     }
 }
