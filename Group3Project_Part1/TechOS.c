@@ -85,6 +85,10 @@ void commandHandler()
         {
             createPCB(arguments, argument2, argument3, argument4, readyQueueHead, blockQueueHead, suspendedReadyHead, suspendedBlockHead);
         }
+        else if(strcmp(currentCommand, "dispatch") == 0)
+        {
+            dispatch(readyQueueHead, blockQueueHead, suspendedReadyHead, suspendedBlockHead);
+        }
         else if(strcmp(currentCommand,"exit") == 0)
         {
             // confirm that the user wishes to exit

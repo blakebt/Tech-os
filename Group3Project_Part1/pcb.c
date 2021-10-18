@@ -483,7 +483,7 @@ int removePcb(struct PCB* toPull, struct PCB* head) //removes the PCB from it's 
     return 0;
 }
 
-void dispatch(char name[], struct PCB* readyQueueHead, struct PCB* blockQueueHead, struct PCB* suspendedReadyHead, struct PCB* suspendedBlockHead)
+void dispatch(struct PCB* readyQueueHead, struct PCB* blockQueueHead, struct PCB* suspendedReadyHead, struct PCB* suspendedBlockHead)
 {
     struct PCB* current = readyQueueHead;
     char fileName[MAX_PNAME];
