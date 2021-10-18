@@ -516,27 +516,21 @@ void dispatch(char name[], struct PCB* readyQueueHead, struct PCB* blockQueueHea
     }
     //Make sure the execution order is correct?
 }
-<<<<<<< HEAD
 
 void loadPCB(char pName[], char class[], char priority[], char filePath[], struct PCB* readyHead, struct PCB* blockedHead, struct PCB* susReadyHead, struct PCB* susBlockedHead)
 {
     if(findPcb(pName, readyHead, blockedHead) == NULL && findPcb(pName, susReadyHead, susBlockedHead) == NULL)
     {
-        FILE *file;
-
-        file = fopen(filePath, "r");
-
-        if(file != NULL)
+        if(access(filePath, F_OK) != 0)
         {
             // the process can be inserted
             int pClass = atoi(class);
             int pPriority = atoi(priority);
             struct PCB* toInsert = setupPCB(pName, pClass, pPriority);
-            strcpy(toInsert->p_path, filePath);
+            strcpy(toInsert->p_data, filePath);
             insertPcb(toInsert, readyHead, blockedHead);
             printf("\nProcess loaded successfully.\n");
         }
-        fclose(file);
     }
     else
     {
@@ -588,5 +582,3 @@ void loadPCB(char pName[], char class[], char priority[], char filePath[], struc
 //     }
 //     return 0;
 // } 
-=======
->>>>>>> 700778263365f8d83047216373e1f0dc960a80f7
