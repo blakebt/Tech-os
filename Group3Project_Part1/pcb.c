@@ -487,7 +487,7 @@ void dispatch(struct PCB* readyQueueHead, struct PCB* blockQueueHead, struct PCB
 {
     struct PCB* current = readyQueueHead->next;
     char fileName[MAX_PNAME];
-    char executeCommand[EXECUTION_COMMAND] = "./execute ";
+    char executeCommand[EXECUTION_COMMAND] = "execute ";
     char* offsetToStr = (char*)malloc(5);
     int lock;
 
@@ -507,13 +507,14 @@ void dispatch(struct PCB* readyQueueHead, struct PCB* blockQueueHead, struct PCB
 
             int outOffset = current->offset + 1;
             sprintf(offsetToStr, "%d", outOffset);
+            strcat(executeCommand, " ");
             strcat(executeCommand, offsetToStr);
             //strcat(executeCommand, " offset+1\"");
             //strcat(executeCommand, "\"");
             //snprintf(executeCommand, sizeof(executeCommand), "\"./execute %s%d+%d\"", fileName,current->offset,1);
-            printf("%s\n", executeCommand);
             lock = system(executeCommand);//System will return 0 if process is done executing
             current->p_state = 0;//Set dispatched process to running
+            printf("Process = %s\tOutcome = %d\n", current->p_data, lock);
 
             if(lock == 0)//lock does not allow another process to be dispatched until current running process is finished
             {
@@ -531,11 +532,11 @@ void dispatch(struct PCB* readyQueueHead, struct PCB* blockQueueHead, struct PCB
             }  
 
             //Go to next process in ready queue
-                current = current->next;
+                current = readyQueueHead->next;
                 free(offsetToStr);
                 char* offsetToStr = (char*)malloc(5);
                 strcpy(executeCommand, "");//Just in case executeCommand needs to be reset so new file path can be added
-                strcat(executeCommand, "\"./execute ");
+                strcat(executeCommand, "execute ");
 
         }
     }
