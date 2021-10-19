@@ -488,7 +488,7 @@ void dispatch(struct PCB* readyQueueHead, struct PCB* blockQueueHead, struct PCB
     struct PCB* current = readyQueueHead->next;
     char fileName[MAX_PNAME];
     char executeCommand[EXECUTION_COMMAND] = "execute ";
-    char* offsetToStr = (char*)malloc(5);
+    char offsetToStr[MAX_PNAME];
     int lock;
 
     if(current == NULL)//Displays error message if ready queue is empty
@@ -514,7 +514,6 @@ void dispatch(struct PCB* readyQueueHead, struct PCB* blockQueueHead, struct PCB
             //snprintf(executeCommand, sizeof(executeCommand), "\"./execute %s%d+%d\"", fileName,current->offset,1);
             lock = system(executeCommand);//System will return 0 if process is done executing
             current->p_state = 0;//Set dispatched process to running
-            printf("Process = %s\tOutcome = %d\n", current->p_data, lock);
 
             if(lock == 0)//lock does not allow another process to be dispatched until current running process is finished
             {
@@ -522,20 +521,25 @@ void dispatch(struct PCB* readyQueueHead, struct PCB* blockQueueHead, struct PCB
                 //Displays message that process completed execution, then delete it.
                 printf("Process %s is done.\n", current->p_name);
                 deletePCB(current->p_name, readyQueueHead, blockQueueHead, suspendedReadyHead, suspendedBlockHead);
+                printf("Crashed after here\n");
+                reintegrater(readyQueueHead, blockQueueHead, suspendedReadyHead, suspendedBlockHead);
+                printf("Didn't Crashed before here\n");
             }
             else
             {
                 current->p_state = 1;
                 interupt_handler(lock, current, readyQueueHead, blockQueueHead, suspendedReadyHead, suspendedBlockHead);
+                printf("Process %s suspended at %d.\n", current->p_name, lock);
                 reintegrater(readyQueueHead, blockQueueHead, suspendedReadyHead, suspendedBlockHead);
                 
             }  
 
             //Go to next process in ready queue
                 current = readyQueueHead->next;
-                free(offsetToStr);
-                char* offsetToStr = (char*)malloc(5);
+                //free(offsetToStr);
+                //char* offsetToStr = (char*)malloc(5);
                 strcpy(executeCommand, "");//Just in case executeCommand needs to be reset so new file path can be added
+                strcpy(offsetToStr, "");
                 strcat(executeCommand, "execute ");
 
         }
