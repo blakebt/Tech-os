@@ -521,9 +521,7 @@ void dispatch(struct PCB* readyQueueHead, struct PCB* blockQueueHead, struct PCB
                 //Displays message that process completed execution, then delete it.
                 printf("Process %s is done.\n", current->p_name);
                 deletePCB(current->p_name, readyQueueHead, blockQueueHead, suspendedReadyHead, suspendedBlockHead);
-                printf("Crashed after here\n");
                 reintegrater(readyQueueHead, blockQueueHead, suspendedReadyHead, suspendedBlockHead);
-                printf("Didn't Crashed before here\n");
             }
             else
             {

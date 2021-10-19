@@ -13,7 +13,7 @@ void interupt_handler(int interupt_val, struct PCB* process,  struct PCB* readyQ
 //This is the function that will unblock Processes if the ready queue is empty, or on a 50% chance if called and there are items in the block queue 
 void reintegrater( struct PCB* readyQueueHead, struct PCB* blockQueueHead, struct PCB* suspendReadyHead, struct PCB* suspendBlockHead)
 {
-    if(readyQueueHead->next == NULL)
+    if(readyQueueHead->next == NULL && blockQueueHead->next != NULL)
     {
         unblockPCB(blockQueueHead->next->p_name, readyQueueHead, suspendReadyHead, blockQueueHead, suspendBlockHead);
     }
