@@ -8,6 +8,8 @@ int main()
 
 void commandHandler()
 {
+    time_t t;
+    srand(time(&t));
     char line[MAX_LINE];
     char currentCommand[MAX_COMMAND];
     char arguments[MAX_COMMAND];

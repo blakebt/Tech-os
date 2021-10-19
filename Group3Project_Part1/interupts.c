@@ -17,11 +17,10 @@ void reintegrater( struct PCB* readyQueueHead, struct PCB* blockQueueHead, struc
     {
         unblockPCB(blockQueueHead->next->p_name, readyQueueHead, suspendReadyHead, blockQueueHead, suspendBlockHead);
     }
-    else if(blockQueueHead != NULL)
+    else if(blockQueueHead->next != NULL)
     {
-        time_t t;
-        srand(time(&t));
-        int chance = (int)(rand()*2);
+        int chance = (rand()%2);
+        printf("%d\n", chance);
         if(chance == 1)
         {
             unblockPCB(blockQueueHead->next->p_name, readyQueueHead, suspendReadyHead, blockQueueHead, suspendBlockHead);
