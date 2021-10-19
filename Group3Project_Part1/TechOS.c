@@ -91,6 +91,10 @@ void commandHandler()
         {
             dispatch(readyQueueHead, blockQueueHead, suspendedReadyHead, suspendedBlockHead);
         }
+        else if(strcmp(currentCommand, "mkdir") == 0)
+        {
+            createDirectory(arguments);
+        }
         else if(strcmp(currentCommand,"exit") == 0)
         {
             // confirm that the user wishes to exit

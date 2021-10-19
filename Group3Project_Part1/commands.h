@@ -11,6 +11,8 @@
 #include <time.h>
 #include <stdlib.h>
 #include <unistd.h>
+#include <sys/stat.h>
+#include <errno.h>
 
 struct PCB
 {
@@ -63,6 +65,6 @@ void dispatch(struct PCB* readyQueueHead, struct PCB* blockQueueHead, struct PCB
 void interupt_handler(int interupt_val, struct PCB* process,  struct PCB* readyQueueHead, struct PCB* blockQueueHead, struct PCB* suspendReadyHead, struct PCB* suspendBlockHead);
 void reintegrater( struct PCB* readyQueueHead, struct PCB* blockQueueHead, struct PCB* suspendReadyHead, struct PCB* suspendBlockHead);
 //int removePcbBlocked(struct PCB* toPull, struct PCB* blockHead, struct PCB* susBlockHead);
-void loadPCB(char pName[], char class[], char priority[], char filePath[], struct PCB* readyHead, struct PCB* blockedHead, struct PCB* susReadyHead, struct PCB* susBlockedHead);
+void createDirectory(char folderName[]);
 #endif
 
