@@ -487,7 +487,7 @@ void dispatch(struct PCB* readyQueueHead, struct PCB* blockQueueHead, struct PCB
 {
     struct PCB* current = readyQueueHead->next;
     char fileName[MAX_PNAME];
-    char executeCommand[EXECUTION_COMMAND] = "\"./execute ";
+    char executeCommand[EXECUTION_COMMAND] = "./execute ";
     char* offsetToStr = (char*)malloc(5);
     int lock;
 
@@ -505,23 +505,26 @@ void dispatch(struct PCB* readyQueueHead, struct PCB* blockQueueHead, struct PCB
             strcpy(fileName, current->p_data);//Copy process file path and offset
             strcat(executeCommand, fileName);//Concatenates both strings to have: "./execute filename"
 
-            //sprintf(offsetToStr, "%d", current->offset);
-            //strcat(executeCommand, offsetToStr);
-            strcat(executeCommand, " offset+1\"");
+            int outOffset = current->offset + 1;
+            sprintf(offsetToStr, "%d", outOffset);
+            strcat(executeCommand, offsetToStr);
+            //strcat(executeCommand, " offset+1\"");
             //strcat(executeCommand, "\"");
             //snprintf(executeCommand, sizeof(executeCommand), "\"./execute %s%d+%d\"", fileName,current->offset,1);
-
+            printf("%s\n", executeCommand);
             lock = system(executeCommand);//System will return 0 if process is done executing
             current->p_state = 0;//Set dispatched process to running
 
             if(lock == 0)//lock does not allow another process to be dispatched until current running process is finished
             {
+                current->p_state = 1;
                 //Displays message that process completed execution, then delete it.
                 printf("Process %s is done.\n", current->p_name);
                 deletePCB(current->p_name, readyQueueHead, blockQueueHead, suspendedReadyHead, suspendedBlockHead);
             }
             else
             {
+                current->p_state = 1;
                 interupt_handler(lock, current, readyQueueHead, blockQueueHead, suspendedReadyHead, suspendedBlockHead);
                 reintegrater(readyQueueHead, blockQueueHead, suspendedReadyHead, suspendedBlockHead);
                 
