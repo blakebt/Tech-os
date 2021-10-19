@@ -485,9 +485,9 @@ int removePcb(struct PCB* toPull, struct PCB* head) //removes the PCB from it's 
 
 void dispatch(struct PCB* readyQueueHead, struct PCB* blockQueueHead, struct PCB* suspendedReadyHead, struct PCB* suspendedBlockHead)
 {
-    struct PCB* current = readyQueueHead;
+    struct PCB* current = readyQueueHead->next;
     char fileName[MAX_PNAME];
-    char executeCommand[MAX_LINE] = "./execute ";
+    char executeCommand[EXECUTION_COMMAND] = "\"./execute ";
     char* offsetToStr = (char*)malloc(5);
     int lock;
 
@@ -502,12 +502,14 @@ void dispatch(struct PCB* readyQueueHead, struct PCB* blockQueueHead, struct PCB
 
         while(current != NULL)
         {
-            strcpy(current->p_data, fileName);//Copy process file path and offset
+            strcpy(fileName, current->p_data);//Copy process file path and offset
             strcat(executeCommand, fileName);//Concatenates both strings to have: "./execute filename"
-            strcat(executeCommand, "+");
 
-            sprintf(offsetToStr, "%d", current->offset);
-            strcat(executeCommand, offsetToStr);
+            //sprintf(offsetToStr, "%d", current->offset);
+            //strcat(executeCommand, offsetToStr);
+            strcat(executeCommand, " offset+1\"");
+            //strcat(executeCommand, "\"");
+            //snprintf(executeCommand, sizeof(executeCommand), "\"./execute %s%d+%d\"", fileName,current->offset,1);
 
             lock = system(executeCommand);//System will return 0 if process is done executing
             current->p_state = 0;//Set dispatched process to running
@@ -530,7 +532,7 @@ void dispatch(struct PCB* readyQueueHead, struct PCB* blockQueueHead, struct PCB
                 free(offsetToStr);
                 char* offsetToStr = (char*)malloc(5);
                 strcpy(executeCommand, "");//Just in case executeCommand needs to be reset so new file path can be added
-                strcat(executeCommand, "./execute ");
+                strcat(executeCommand, "\"./execute ");
 
         }
     }
