@@ -103,6 +103,7 @@ void commandHandler()
                 char trimmedName[MAX_LINE];
                 sprintf(fullName, "%s %s %s %s", arguments, argument2, argument3, argument4);
                 int j = 0;
+                int count = 0;
                 for(int i = 0; i < strlen(fullName); i++)
                 {
                     if(fullName[i] != '"')
@@ -116,7 +117,15 @@ void commandHandler()
                     }
                     else
                     {
-                        continue;
+                        count++;
+                        if(count == 2)
+                        {
+                            break;
+                        }
+                        else
+                        {
+                            continue;
+                        }
                     }
                 }
                 createDirectory(trimmedName);
