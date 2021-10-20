@@ -33,7 +33,6 @@ void commandHandler()
         reset();
         fgets(line, MAX_LINE, stdin);
         sscanf(line, "%s %s %s %s %s %s", currentCommand, arguments, argument2, argument3, argument4);
-
         // command handler code
         if(strcmp(currentCommand,"help") == 0)
         {
@@ -93,7 +92,39 @@ void commandHandler()
         }
         else if(strcmp(currentCommand, "mkdir") == 0)
         {
-            createDirectory(arguments);
+
+            if(arguments[0] != '"')
+            {
+                createDirectory(arguments);
+            }
+            else if(arguments[0] == '"')
+            {
+                char fullName[MAX_LINE];
+                char trimmedName[MAX_LINE];
+                sprintf(fullName, "%s %s %s %s", arguments, argument2, argument3, argument4);
+                int j = 0;
+                for(int i = 0; i < strlen(fullName); i++)
+                {
+                    if(fullName[i] != '"')
+                    {
+                        trimmedName[j] = fullName[i];
+                        j++;
+                        if(fullName[i] == '\0')
+                        {
+                            break;
+                        }
+                    }
+                    else
+                    {
+                        continue;
+                    }
+                }
+                createDirectory(trimmedName);
+            }
+            else
+            {
+                printf("\nMultiple word names for folders must be enclosed in quotation marks.\n");
+            }
         }
         else if(strcmp(currentCommand,"exit") == 0)
         {
