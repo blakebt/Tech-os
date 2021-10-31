@@ -5,6 +5,7 @@
 #define MAX_LINE 128
 #define MAX_COMMAND 64
 #define MAX_PNAME 50
+#define MAX_FILE_NAME_LENGTH 1028
 
 #include <stdio.h>
 #include <string.h>
@@ -13,6 +14,8 @@
 #include <unistd.h>
 #include <sys/stat.h>
 #include <errno.h>
+#include <dirent.h>
+#include <math.h>
 
 struct PCB
 {
@@ -65,6 +68,9 @@ void dispatch(struct PCB* readyQueueHead, struct PCB* blockQueueHead, struct PCB
 void interupt_handler(int interupt_val, struct PCB* process,  struct PCB* readyQueueHead, struct PCB* blockQueueHead, struct PCB* suspendReadyHead, struct PCB* suspendBlockHead);
 void reintegrater( struct PCB* readyQueueHead, struct PCB* blockQueueHead, struct PCB* suspendReadyHead, struct PCB* suspendBlockHead);
 //int removePcbBlocked(struct PCB* toPull, struct PCB* blockHead, struct PCB* susBlockHead);
+//From files.c
 void createDirectory(char folderName[]);
+void viewDirectory(char directoryName[]);
+char changeDirectory(char currentDir[], char argument[]);
 #endif
 

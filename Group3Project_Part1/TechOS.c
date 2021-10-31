@@ -10,6 +10,7 @@ void commandHandler()
 {
     time_t t;
     srand(time(&t));
+    char currentDirectory[MAX_FILE_NAME_LENGTH] = ".";
     char line[MAX_LINE];
     char currentCommand[MAX_COMMAND];
     char arguments[MAX_COMMAND];
@@ -134,6 +135,101 @@ void commandHandler()
             {
                 printf("\nMultiple word names for folders must be enclosed in quotation marks.\n");
             }
+        }
+        else if(strcmp(currentCommand, "view-dir") == 0)
+        {
+            if(strcmp(arguments, "") == 0)
+            {
+                viewDirectory(currentDirectory);
+            }
+            else
+            {
+                if(arguments[0] != '"')
+                {
+                    viewDirectory(arguments);
+                }
+                else if(arguments[0] == '"')
+                {
+                    char fullName[MAX_LINE];
+                    char trimmedName[MAX_LINE];
+                    sprintf(fullName, "%s %s %s %s", arguments, argument2, argument3, argument4);
+                    int j = 0;
+                    int count = 0;
+                    for(int i = 0; i < strlen(fullName); i++)
+                    {
+                        if(fullName[i] != '"')
+                        {
+                            trimmedName[j] = fullName[i];
+                            j++;
+                            if(fullName[i] == '\0')
+                            {
+                                break;
+                            }
+                        }
+                        else
+                        {
+                            count++;
+                            if(count == 2)
+                            {
+                                break;
+                            }
+                            else
+                            {
+                                continue;
+                            }
+                        }
+                    }
+                    viewDirectory(trimmedName);
+                }
+            }
+        }
+        else if(strcmp(currentCommand, "change-dir") == 0)
+        {
+            if(arguments[0] != '"')
+            {
+                *currentDirectory = changeDirectory(currentDirectory, arguments);
+            }
+            else if(arguments[0] == '"')
+            {
+                char fullName[MAX_LINE];
+                char trimmedName[MAX_LINE];
+                sprintf(fullName, "%s %s %s %s", arguments, argument2, argument3, argument4);
+                int j = 0;
+                int count = 0;
+                for(int i = 0; i < strlen(fullName); i++)
+                {
+                    if(fullName[i] != '"')
+                    {
+                        trimmedName[j] = fullName[i];
+                        j++;
+                        if(fullName[i] == '\0')
+                        {
+                            break;
+                        }
+                    }
+                    else
+                    {
+                        count++;
+                        if(count == 2)
+                        {
+                            break;
+                        }
+                        else
+                        {
+                            continue;
+                        }
+                    }
+                }
+                *currentDirectory = changeDirectory(currentDirectory, trimmedName);
+            }
+            else
+            {
+                printf("\nMultiple word names for folders must be enclosed in quotation marks.\n");
+            }
+        }
+        else if(strcmp(currentCommand, "show" ) == 0)
+        {
+            printf("\n%s\n\n", currentDirectory);
         }
         else if(strcmp(currentCommand,"exit") == 0)
         {
