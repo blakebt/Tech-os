@@ -28,6 +28,16 @@ void deleteDirectory(char folderName[])
     {
         printf("\nFolder successfully deleted.\n");
     }
+    else if(errno == ENOTEMPTY)
+    {
+        char command[MAX_COMMAND];
+        strcpy(command, "rd ");
+        strcat(command, folderName);
+        strcat(command, " /S");
+        system(command);
+
+        printf("\nFolder successfully deleted.\n");
+    }
     else if(errno != EEXIST)
     {
         red();
