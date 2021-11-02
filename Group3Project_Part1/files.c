@@ -44,7 +44,6 @@ void deleteDirectory(char folderName[])
             strcpy(command, "rm ");
             strcat(command, " -rf ");
             strcat(command, folderName);
-            printf("\nThis directory is not empty, this will delete all files within ");
             system(command);
         #endif
 
