@@ -16,6 +16,21 @@ void commandHandler()
     char argument2[MAX_COMMAND];
     char argument3[MAX_COMMAND];
     char argument4[MAX_COMMAND];
+    char argument5[MAX_COMMAND];
+    char argument6[MAX_COMMAND];
+    char argument7[MAX_COMMAND];
+    char argument8[MAX_COMMAND];
+    char argument9[MAX_COMMAND];
+    char argument10[MAX_COMMAND];
+    char argument11[MAX_COMMAND];
+    char argument12[MAX_COMMAND];
+    char argument13[MAX_COMMAND];
+    char argument14[MAX_COMMAND];
+    char argument15[MAX_COMMAND];
+    char argument16[MAX_COMMAND];
+    char argument17[MAX_COMMAND];
+    char argument18[MAX_COMMAND];
+    char argument19[MAX_COMMAND];
     struct PCB* readyQueueHead = setupPCB("readyHead", 0, 0);
     struct PCB* blockQueueHead = setupPCB("blockHead", 0, 0);
     struct PCB* suspendedReadyHead = setupPCB("susReadyHead", 0, 0);
@@ -103,7 +118,7 @@ void commandHandler()
             {
                 char fullName[MAX_LINE];
                 char trimmedName[MAX_LINE];
-                sprintf(fullName, "%s %s %s %s", arguments, argument2, argument3, argument4);
+                sprintf(fullName, "%s %s %s %s %s %s %s %s %s %s %s %s %s %s %s %s %s %s %s", arguments, argument2, argument3, argument4, argument5, argument6, argument7, argument8, argument9, argument10, argument11, argument12, argument13, argument14, argument15, argument16, argument17, argument18, argument19);
                 int j = 0;
                 int count = 0;
                 int quotesClosed = 0;
@@ -164,7 +179,7 @@ void commandHandler()
             {
                 char fullName[MAX_LINE];
                 char trimmedName[MAX_LINE];
-                sprintf(fullName, "%s %s %s %s", arguments, argument2, argument3, argument4);
+                sprintf(fullName, "%s %s %s %s %s %s %s %s %s %s %s %s %s %s %s %s %s %s %s", arguments, argument2, argument3, argument4, argument5, argument6, argument7, argument8, argument9, argument10, argument11, argument12, argument13, argument14, argument15, argument16, argument17, argument18, argument19);
                 int j = 0;
                 int count = 0;
                 int quotesClosed = 0;
@@ -227,7 +242,7 @@ void commandHandler()
                 {
                     char fullName[MAX_LINE];
                     char trimmedName[MAX_LINE];
-                    sprintf(fullName, "%s %s %s %s", arguments, argument2, argument3, argument4);
+                    sprintf(fullName, "%s %s %s %s %s %s %s %s %s %s %s %s %s %s %s %s %s %s %s", arguments, argument2, argument3, argument4, argument5, argument6, argument7, argument8, argument9, argument10, argument11, argument12, argument13, argument14, argument15, argument16, argument17, argument18, argument19);
                     int j = 0;
                     int count = 0;
                     for(int i = 0; i < strlen(fullName); i++)
@@ -268,7 +283,7 @@ void commandHandler()
             {
                 char fullName[MAX_LINE];
                 char trimmedName[MAX_LINE];
-                sprintf(fullName, "%s %s %s %s", arguments, argument2, argument3, argument4);
+                sprintf(fullName, "%s %s %s %s %s %s %s %s %s %s %s %s %s %s %s %s %s %s %s", arguments, argument2, argument3, argument4, argument5, argument6, argument7, argument8, argument9, argument10, argument11, argument12, argument13, argument14, argument15, argument16, argument17, argument18, argument19);
                 int j = 0;
                 int count = 0;
                 for(int i = 0; i < strlen(fullName); i++)
@@ -312,7 +327,7 @@ void commandHandler()
             {
                 char fullName[MAX_LINE];
                 char trimmedName[MAX_LINE];
-                sprintf(fullName, "%s %s %s %s", arguments, argument2, argument3, argument4);
+                sprintf(fullName, "%s %s %s %s %s %s %s %s %s %s %s %s %s %s %s %s %s %s %s", arguments, argument2, argument3, argument4, argument5, argument6, argument7, argument8, argument9, argument10, argument11, argument12, argument13, argument14, argument15, argument16, argument17, argument18, argument19);
                 int j = 0;
                 int count = 0;
                 for(int i = 0; i < strlen(fullName); i++)
@@ -356,7 +371,7 @@ void commandHandler()
             {
                 char fullName[MAX_LINE];
                 char trimmedName[MAX_LINE];
-                sprintf(fullName, "%s %s %s %s", arguments, argument2, argument3, argument4);
+                sprintf(fullName, "%s %s %s %s %s %s %s %s %s %s %s %s %s %s %s %s %s %s %s", arguments, argument2, argument3, argument4, argument5, argument6, argument7, argument8, argument9, argument10, argument11, argument12, argument13, argument14, argument15, argument16, argument17, argument18, argument19);
                 int j = 0;
                 int count = 0;
                 for(int i = 0; i < strlen(fullName); i++)
