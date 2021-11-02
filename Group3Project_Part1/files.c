@@ -36,6 +36,9 @@ void viewDirectory(char directoryName[])
     }
     else
     {
+        char currentDir[MAX_FILE_NAME_LENGTH];
+        getcwd(currentDir, MAX_FILE_NAME_LENGTH);
+        printf("------------------------------------------------\n%s\n------------------------------------------------\n", currentDir);
         while ((files=readdir(localFolder)))
         {
             if(strcmp(files->d_name, ".") != 0 && strcmp(files->d_name, "..") != 0)
@@ -56,47 +59,67 @@ void viewDirectory(char directoryName[])
     closedir(localFolder);
 }
 
-char changeDirectory(char currentDir[], char argument[])
+void changeDirectory(char argument[]) //IF ANY OF THIS GETS CHANGED I VOW TERRIBLE THINGS TO HAPPEN 
 {
-    printf("Current location: %s\n", currentDir);
     if(strcmp(argument, "~") == 0) //This will be the up directory argument, if anyone wants to change this, just swap out the ~ with the desired argument
     {
-        int originalLength = strlen(currentDir); //gets the original length of the directory string
-        char *revDir = malloc(originalLength); //creates a temporary copy of the directory, reverses it and stores it
-        strcpy(revDir, currentDir);
-        char *tempRevDir = strrev(revDir);
-        char slash = '/'; //I just didn't want to look up the int represenation of /
-        char *invLocation = strchr(revDir, slash); //finds the first instance of / in the string (which because it's reversed is acaully the last)
-        char *output = NULL; //pointer for the ouput directory
+        char currentDir[MAX_FILE_NAME_LENGTH];
+        getcwd(currentDir, MAX_FILE_NAME_LENGTH);
 
-        if(invLocation)
+        int lastSlashIdx = 0;
+        printf("%d\n", strlen(currentDir));
+        for(int i = 0; i < strlen(currentDir); i++)
         {
-            int location = invLocation - tempRevDir+1; //figures out the offset of the / in the string
-            output = malloc(originalLength - location+1); //allocates the correct ammount of memory for the output
-            memcpy(output, currentDir, originalLength - location); //makes a copy of the string from the current, not reversed, directory, going to the original lenght - location of hte character - 2 (2 was just always needed in my testing, and always worked)
-        } 
-        else
-        {
-            red();
-            printf("Already in root directory\n");
-            reset();
+            if(currentDir[i] == '\\')
+            {
+                lastSlashIdx = i;
+            }
         }
-        printf("New location: %s\n", output);
-        return *output;
+        printf("%d\n", lastSlashIdx);
+        char thing[MAX_FILE_NAME_LENGTH];
+        for(int i = 0; i < lastSlashIdx; i++)
+        {
+            thing[i] = currentDir[i];
+            printf("%c\t", currentDir[i]);
+        }
+        thing[lastSlashIdx] = '\0';
+        printf("%s\n", thing);
+        if(chdir(thing) == 0)
+        {
+            printf("Successfully changed directory\n");
+        }
+        else{
+            printf("Failure in directory change\n");
+        }
     }
     else if(strncmp(argument, "/", 1) == 0)
     {
-        char *output;
-        strcpy(output, currentDir);
+        char output[MAX_FILE_NAME_LENGTH];
+        //char prt2[MAX_FILE_NAME_LENGTH];
+        //strcpy(prt2, argument);
+        getcwd(output, MAX_FILE_NAME_LENGTH);
         strcat(output, argument);
-        
-        printf("New location: %s\n", output);
-        return *output;
+
+        if(chdir(output) == 0)
+        {
+            printf("Successfully changed directory\n");
+        }
+        else{
+            red();
+            printf("Directory not found\n");
+            reset();
+        }
     }
-    else 
+    else
     {
-        char *output = argument;
-        printf("New location: %s\n", output);
-        return *output;
+        if(chdir(argument) == 0)
+        {
+            printf("Successfully changed directory\n");
+        }
+        else{
+            red();
+            printf("Directory not found\n");
+            reset();
+        }
     }
 }
