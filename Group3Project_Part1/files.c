@@ -31,13 +31,22 @@ void deleteDirectory(char folderName[])
     // if the directory is not empty
     else if(errno == ENOTEMPTY)
     {
-        // build the command for the system call
-        char command[MAX_COMMAND];
-        strcpy(command, "rd ");
-        strcat(command, folderName);
-        strcat(command, " /S");
-        printf("\nThis directory is not empty, this will delete all files within ");
-        system(command);
+        #ifdef _WIN32
+            // build the command for the system call
+            char command[MAX_COMMAND];
+            strcpy(command, "rd ");
+            strcat(command, folderName);
+            strcat(command, " /S");
+            printf("\nThis directory is not empty, this will delete all files within ");
+            system(command);
+        #elif __linux__
+            char command[MAX_COMMAND];
+            strcpy(command, "rm ");
+            strcat(command, " -rf ");
+            strcat(command, folderName);
+            printf("\nThis directory is not empty, this will delete all files within ");
+            system(command);
+        #endif
 
     }
     // if the directory does not exist
