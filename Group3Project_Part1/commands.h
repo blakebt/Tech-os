@@ -72,5 +72,6 @@ void reintegrater( struct PCB* readyQueueHead, struct PCB* blockQueueHead, struc
 void createDirectory(char folderName[]);
 void viewDirectory(char directoryName[]);
 char changeDirectory(char currentDir[], char argument[]);
+void deleteDirectory(char folderName[]);
 #endif
 

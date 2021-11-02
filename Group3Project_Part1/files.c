@@ -21,6 +21,27 @@ void createDirectory(char folderName[])
     }
 }
 
+void deleteDirectory(char folderName[])
+{
+    int isDeleted = rmdir(folderName);
+    if(isDeleted == 0) // folder was successfully deleted
+    {
+        printf("\nFolder successfully deleted.\n");
+    }
+    else if(errno != EEXIST)
+    {
+        red();
+        printf("\nFolder does not exist.\n");
+        reset();
+    }
+    else
+    {
+        red();
+        printf("\nError when deleting directory.\n");
+        reset();
+    }
+}
+
 void viewDirectory(char directoryName[]) 
 //currently can only read files and subdirectories within the directory files.c is saved in 
 {
