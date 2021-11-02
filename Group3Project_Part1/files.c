@@ -5,7 +5,7 @@ void createDirectory(char folderName[])
     int isCreated = mkdir(folderName);
     if(isCreated == 0) // directory was successfully created
     {
-        printf("\nFolder successfully created.\n");
+        printf("\nDirectory successfully created.\n");
     }
     else if(errno == EEXIST)
     {
@@ -26,22 +26,25 @@ void deleteDirectory(char folderName[])
     int isDeleted = rmdir(folderName);
     if(isDeleted == 0) // folder was successfully deleted
     {
-        printf("\nFolder successfully deleted.\n");
+        printf("\nDirectory successfully deleted.\n");
     }
+    // if the directory is not empty
     else if(errno == ENOTEMPTY)
     {
+        // build the command for the system call
         char command[MAX_COMMAND];
         strcpy(command, "rd ");
         strcat(command, folderName);
         strcat(command, " /S");
+        printf("\nThis directory is not empty, this will delete all files within ");
         system(command);
 
-        printf("\nFolder successfully deleted.\n");
     }
+    // if the directory does not exist
     else if(errno != EEXIST)
     {
         red();
-        printf("\nFolder does not exist.\n");
+        printf("\nDirectory does not exist.\n");
         reset();
     }
     else
