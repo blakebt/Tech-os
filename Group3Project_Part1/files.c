@@ -165,3 +165,62 @@ void changeDirectory(char argument[]) //IF ANY OF THIS GETS CHANGED I VOW TERRIB
         }
     }
 }
+
+void createFile(char fileName[])
+{
+    char filePath[MAX_FILE_NAME_LENGTH + 1];//Holds absolute path of file
+    char cwd[MAX_FILE_NAME_LENGTH];//Holds current directory
+    if(getcwd(cwd, sizeof(cwd)) == NULL)
+    {
+        perror("chdir() error()\n");
+    }
+
+    sprintf(filePath, "%s/%s", cwd, fileName);//Formats the file path
+
+    if(access(filePath, F_OK) == 0)//Checks if a file of same name exists in current directory
+    {
+        red();
+        printf("File name already exists in the current directory.\n");
+        reset();
+    }
+    else
+    {
+        FILE* fPtr;
+        if((fPtr = fopen(filePath, "w+")) != NULL)//Otherwise creates file and closes (So file can be deleted later)
+        {
+            printf("File %s created successfully.\n", fileName);
+            fclose(fPtr);
+        }
+        else
+        {
+            red();
+            printf("Error occurred during file creation.\n");
+            reset();
+        }
+        
+    }
+}
+
+void removeFile(char fileName[])
+{
+
+    char filePath[MAX_FILE_NAME_LENGTH + 1];//Holds absolute path of file
+    char cwd[MAX_FILE_NAME_LENGTH];//Holds current directory
+    if(getcwd(cwd, sizeof(cwd)) == NULL)
+    {
+        perror("chdir() error()\n");
+    }
+
+    sprintf(filePath, "%s/%s", cwd, fileName);//Formats file path to be deleted
+    
+    if(remove(fileName) == 0)//Checks that file was deleted successfully
+    {
+        printf("%s successfully removed\n", fileName);
+    }
+    else
+    {
+        red();
+        printf("File does not exist. ERRNO()\n");
+        reset();
+    }
+}

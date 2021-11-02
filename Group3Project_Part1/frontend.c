@@ -340,6 +340,24 @@ void showFunctionHelp(char* arguments)
         printf("Example of command:\n");
         printf("dispatch\n\n");
     }
+    else if(strcmp(arguments, "createf") == 0)
+    {
+        blue();
+        printf("\ncreatef ");
+        reset();
+        printf("creates a file in current directory or in specified directory.\n\n");
+        printf("Example of command:\n");
+        printf("createf [file name]  or  createf [./directory name/file name]\n\n");
+    }
+    else if(strcmp(arguments, "deletef") == 0)
+    {
+        blue();
+        printf("\ndeletef ");
+        reset();
+        printf("removes file from system.\n\n");
+        printf("Example of command:\n");
+        printf("deletef [file name]  or  deletef [./directory name/file name]\n\n");
+    }
     else
     {
         printHelpMenu();

@@ -73,5 +73,7 @@ void createDirectory(char folderName[]);
 void viewDirectory(char directoryName[]);
 void changeDirectory(char argument[]);
 void deleteDirectory(char folderName[]);
+void createFile(char fileName[]);
+void removeFile(char fileName[]);
 #endif
 
