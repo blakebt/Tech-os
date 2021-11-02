@@ -120,7 +120,6 @@ void changeDirectory(char argument[]) //IF ANY OF THIS GETS CHANGED I VOW TERRIB
         for(int i = 0; i < lastSlashIdx; i++)
         {
             thing[i] = currentDir[i];
-            printf("%c\t", currentDir[i]);
         }
         thing[lastSlashIdx] = '\0';
         if(chdir(thing) == 0)
