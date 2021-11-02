@@ -358,6 +358,24 @@ void showFunctionHelp(char* arguments)
         printf("Example of command:\n");
         printf("deletef [file name]  or  deletef [./directory name/file name]\n\n");
     }
+    else if(strcmp(arguments, "view-dir") == 0)
+    {
+        blue();
+        printf("\nview-dir");
+        reset();
+        printf("shows files in the current directory or specified directory\n\n");
+        printf("Example of command:\n");
+        printf("view-dir [directory path]\n\n");
+    }
+    else if(strcmp(arguments, "change-dir") == 0)
+    {
+        blue();
+        printf("\nchange-dir");
+        reset();
+        printf("changes the current directory using a full path, relative path, or use '~' to go up a directory\n\n");
+        printf("Example of command:\n");
+        printf("change-dir [directory path]\n\n");
+    }
     else
     {
         printHelpMenu();
