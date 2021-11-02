@@ -92,11 +92,13 @@ void commandHandler()
         }
         else if(strcmp(currentCommand, "mkdir") == 0)
         {
-
-            if(arguments[0] != '"')
+            // create a one word name directory
+            if(arguments[0] != '"' && argument2 == "") // will only create the one word directory if the input is really only one word
             {
                 createDirectory(arguments);
             }
+            // create a multiple word name directory
+            // will only create if the name is enclosed in quotation marks.
             else if(arguments[0] == '"')
             {
                 char fullName[MAX_LINE];
@@ -104,13 +106,16 @@ void commandHandler()
                 sprintf(fullName, "%s %s %s %s", arguments, argument2, argument3, argument4);
                 int j = 0;
                 int count = 0;
+                int quotesClosed = 0;
+                // trim the input for the create directory function
                 for(int i = 0; i < strlen(fullName); i++)
                 {
+                    // if the character isn't a quotation mark
                     if(fullName[i] != '"')
                     {
-                        trimmedName[j] = fullName[i];
+                        trimmedName[j] = fullName[i]; // copy the character to the trimmed version
                         j++;
-                        if(fullName[i] == '\0')
+                        if(fullName[i] == '\0') // if we've reached the end of the input string, break out of the loop
                         {
                             break;
                         }
@@ -118,8 +123,9 @@ void commandHandler()
                     else
                     {
                         count++;
-                        if(count == 2)
+                        if(count == 2) // if two quotation marks have been found
                         {
+                            quotesClosed = 1;
                             break;
                         }
                         else
@@ -128,16 +134,29 @@ void commandHandler()
                         }
                     }
                 }
-                createDirectory(trimmedName);
+                // if the quotes are closed, then we can attempt to create the directory
+                if(quotesClosed)
+                {
+                    createDirectory(trimmedName);
+                }
+                else
+                {
+                    red();
+                    printf("\nFile names with spaces must be enclosed by quotation marks.\n");
+                    reset();
+                }
             }
             else
             {
+                red();
                 printf("\nMultiple word names for folders must be enclosed in quotation marks.\n");
+                reset();
             }
         }
         else if(strcmp(currentCommand, "rmdir") == 0)
         {
-            if(arguments[0] != '"')
+            // this is functionally similar to createDirectory
+            if(arguments[0] != '"' && argument2 != "") // will only delete the one word directory if the input is really only one word
             {
                 deleteDirectory(arguments);
             }
@@ -148,6 +167,7 @@ void commandHandler()
                 sprintf(fullName, "%s %s %s %s", arguments, argument2, argument3, argument4);
                 int j = 0;
                 int count = 0;
+                int quotesClosed = 0;
                 for(int i = 0; i < strlen(fullName); i++)
                 {
                     if(fullName[i] != '"')
@@ -164,6 +184,7 @@ void commandHandler()
                         count++;
                         if(count == 2)
                         {
+                            quotesClosed = 1;
                             break;
                         }
                         else
@@ -172,11 +193,22 @@ void commandHandler()
                         }
                     }
                 }
-                deleteDirectory(trimmedName);
+                if(quotesClosed)
+                {
+                    deleteDirectory(trimmedName);
+                }
+                else
+                {
+                    red();
+                    printf("\nFile names with spaces must be enclosed by quotation marks.\n");
+                    reset();
+                }
             }
             else
             {
+                red();
                 printf("\nMultiple word names for folders must be enclosed in quotation marks.\n");
+                reset();
             }
         }
         else if(strcmp(currentCommand, "view-dir") == 0)
