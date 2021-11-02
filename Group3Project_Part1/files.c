@@ -63,8 +63,8 @@ void deleteDirectory(char folderName[])
     }
 }
 
-void viewDirectory(char directoryName[]) 
-//currently can only read files and subdirectories within the directory files.c is saved in 
+void viewDirectory(char directoryName[])
+//currently can only read files and subdirectories within the directory files.c is saved in
 {
     DIR *localFolder;
     struct dirent *files;
@@ -88,7 +88,7 @@ void viewDirectory(char directoryName[])
                 struct stat currentFile;
                 stat(files->d_name, &currentFile);
                 printf("%s", files->d_name);
-                for(int i = 1; i <= 3-(files->d_namlen / 8); i++)
+                for(int i = 1; i <= 3-(strlen(files->d_name) / 8); i++)
                 {
                     printf("\t");
                 }
@@ -97,11 +97,11 @@ void viewDirectory(char directoryName[])
             }
         }
     }
-    
+
     closedir(localFolder);
 }
 
-void changeDirectory(char argument[]) //IF ANY OF THIS GETS CHANGED I VOW TERRIBLE THINGS TO HAPPEN 
+void changeDirectory(char argument[]) //IF ANY OF THIS GETS CHANGED I VOW TERRIBLE THINGS TO HAPPEN
 {
     if(strcmp(argument, "~") == 0) //This will be the up directory argument, if anyone wants to change this, just swap out the ~ with the desired argument
     {
@@ -109,7 +109,6 @@ void changeDirectory(char argument[]) //IF ANY OF THIS GETS CHANGED I VOW TERRIB
         getcwd(currentDir, MAX_FILE_NAME_LENGTH);
 
         int lastSlashIdx = 0;
-        printf("%d\n", strlen(currentDir));
         for(int i = 0; i < strlen(currentDir); i++)
         {
             if(currentDir[i] == '\\')
@@ -117,7 +116,6 @@ void changeDirectory(char argument[]) //IF ANY OF THIS GETS CHANGED I VOW TERRIB
                 lastSlashIdx = i;
             }
         }
-        printf("%d\n", lastSlashIdx);
         char thing[MAX_FILE_NAME_LENGTH];
         for(int i = 0; i < lastSlashIdx; i++)
         {
@@ -125,7 +123,6 @@ void changeDirectory(char argument[]) //IF ANY OF THIS GETS CHANGED I VOW TERRIB
             printf("%c\t", currentDir[i]);
         }
         thing[lastSlashIdx] = '\0';
-        printf("%s\n", thing);
         if(chdir(thing) == 0)
         {
             printf("Successfully changed directory\n");
@@ -197,7 +194,7 @@ void createFile(char fileName[])
             printf("Error occurred during file creation.\n");
             reset();
         }
-        
+
     }
 }
 
@@ -212,7 +209,7 @@ void removeFile(char fileName[])
     }
 
     sprintf(filePath, "%s/%s", cwd, fileName);//Formats file path to be deleted
-    
+
     if(remove(fileName) == 0)//Checks that file was deleted successfully
     {
         printf("%s successfully removed\n", fileName);
