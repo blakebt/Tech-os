@@ -234,5 +234,5 @@ int main()
     login(database);
     printf("%d", currentUser.isRoot);
     makeAdmin(database, currentUser);
-    return 0;
+    return 1;
 }
