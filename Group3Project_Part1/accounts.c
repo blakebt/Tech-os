@@ -12,6 +12,7 @@ typedef struct
     char password[MAX_PASSWORD];
     int isAdmin; // boolean. Only the root user can change this for users
     int isRoot; // boolean. Only one user will have this = 1
+    int lineNumber;//Contains what line user is found in file
 } User;
 
 int rootExists = 0; // 0 if there isn't a root account, 1 if there is. Once this is 1, it should never change.
@@ -143,7 +144,7 @@ void makeAdmin(User* database, User root)
 {
     char username[MAX_USERNAME];
     char rootPassword[MAX_PASSWORD];
-    if(root.isRoot)
+    if(root.isRoot && root.isAdmin)
     {
         printf("\nEnter the user you wish to make an administrator: ");
         scanf(" %s", username);
@@ -170,8 +171,53 @@ void makeAdmin(User* database, User root)
     }
     else
     {
-        printf("\nThis user is not the root.\n\n");
+        printf("\nThis user is not the root or an administrator.\n\n");
     }
+}
+
+void removeAdmin(User* database, User root)
+{
+    char username[MAX_USERNAME];
+    char rootPassword[MAX_PASSWORD];
+
+    if(root.isRoot)
+    {
+        printf("\nEnter the user you wish to remove as an administrator: ");
+        scanf(" %s", username);
+
+        int index = checkUserExists(database, username);
+        if(index >= 0)
+        {
+            if(database[index].isAdmin == 0 && database[index].isRoot == 0)
+            {
+                printf("%s is not an administrator\n\n", database[index].username);
+            }
+            else
+            {
+                printf("\nEnter password to confirm: ");
+                scanf(" %s", rootPassword);
+                if(checkPassword(root, rootPassword))
+                {
+                    database[index].isAdmin = 0;
+                    printf("\n%s is now removed as an administrator.\n\n", username);
+                }
+                else
+                {
+                    printf("\nEntered password is incorrect.\n\n");
+                }
+            }
+        }
+        else
+        {
+            printf("\nThis user does not exist.\n");
+        }
+    }   
+    
+    else
+    {
+        printf("\nThis user is not the root or an administrator.\n\n");
+    }         
+    
 }
 
 int main()
