@@ -426,6 +426,137 @@ int verify_specialChar_rule(char pwd[])
     return result;
 }
 
+User* load_all_accounts(char* fileName) //Takes the relative or absolute file path for the user accounts file and returns an array of User struct type filled with all accounts' information
+{
+    User *arrayTest = malloc(sizeof(User));
+    FILE *fi;
+    fi = fopen(fileName, "r");
+    if(fi != NULL)
+    {
+        char command[10000];
+        char uname[10000];
+        char pswd[10000];
+        int root;
+        int admin;
+        int eoftest;
+        int currentRead = 0;
+        while(fgets(command, 10000, fi))
+        {
+            if(currentRead > 0)
+            {
+                arrayTest = realloc(arrayTest, (currentRead+1)*sizeof(User))
+            }
+            int round = 0;
+            int lastIdx = 0;
+            for(int i = 0; i < strlen(command); i++)
+            {
+                if(command[i] == ',')
+                {
+                    switch (round)
+                    {
+                    case 0:
+                        // get user name
+                        strncpy(uname, command, i);
+                        lastIdx = i+1;
+                        round++;
+                        break;
+                    case 1:
+                        //get password
+                        strncpy(pswd, command+lastIdx, i-lastIdx);
+                        lastIdx = i+1;
+                        round++;
+                    case 2:
+                        //get root permission
+                        root = atoi(command+lastIdx);
+                        lastIdx = i+1;
+                        round++;
+                        break;
+                    case 3: 
+                        //get admin permission
+                        admin = atoi(command+lastIdx);
+                        break;
+                    default:
+                        break;
+                    }
+                }
+            }
+            strcpy(arrayTest[currentRead].username, uname);
+            strcpy(arrayTest[currentRead].password, pswd);
+            arrayTest[currentRead].isAdmin = admin;
+            arrayTest[currentRead].isRoot = root;
+            arrayTest[currentRead].lineNumber = currentRead;
+            currentRead++;
+        }
+    }
+    return arrayTest;
+}
+
+User load_active_account(int line_number, char* filename) //takes the line number (starting from 0) for the user in the user info file, and will return just the info for that user
+{
+    User currentAccount;
+    FILE *fi;
+    fi = fopen(filename, "r");
+    if(fi != NULL)
+    {
+        // printf("\nAvailable commands:\n");
+        // printf("-------------------\n");
+        char command[10000];
+        char uname[10000];
+        char pswd[10000];
+        int root;
+        int admin;
+        int eoftest;
+        //created with aid from tutorialkart.com in C - Read Text File, https://www.tutorialkart.com/c-programming/c-read-text-file/#:~:text=C%20%E2%80%93%20Read%20Text%20File%20Character%20by%20Character,Close%20the%20text%20file%20using%20fclose%20%28%29%20function.
+        int currentRead = 0;
+        while(fgets(command, 10000, fi))
+        {
+            int round = 0;
+            int lastIdx = 0;
+            for(int i = 0; i < strlen(command); i++)
+            {
+                if(command[i] == ',')
+                {
+                    switch (round)
+                    {
+                    case 0:
+                        // get user name
+                        strncpy(uname, command, i);
+                        lastIdx = i+1;
+                        round++;
+                        break;
+                    case 1:
+                        //get password
+                        strncpy(pswd, command+lastIdx, i-lastIdx);
+                        lastIdx = i+1;
+                        round++;
+                    case 2:
+                        //get root permission
+                        root = atoi(command+lastIdx);
+                        lastIdx = i+1;
+                        round++;
+                        break;
+                    case 3: 
+                        //get admin permission
+                        admin = atoi(command+lastIdx);
+                        break;
+                    default:
+                        break;
+                    }
+                }
+            }
+            if(currentRead == findLine)
+            {
+                strcpy(currentAccount.username, uname);
+                strcpy(currentAccount.password, pswd);
+                currentAccount.isAdmin = admin;
+                currentAccount.isRoot = root;
+                currentAccount.lineNumber = currentRead;
+            }
+            currentRead++;
+        }
+    }
+    return currentAccount;
+}
 
 int main()
 {
