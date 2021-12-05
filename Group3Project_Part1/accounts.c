@@ -426,9 +426,9 @@ int verify_specialChar_rule(char pwd[])
     return result;
 }
 
-User* load_all_accounts(char* fileName) //Takes the relative or absolute file path for the user accounts file and returns an array of User struct type filled with all accounts' information
+int load_all_accounts(char* fileName, User *accountArray) //Takes the relative or absolute file path for the user accounts file and returns the number of accounts, adn the array passed in will contain User struct type filled with all accounts' information
 {
-    User *arrayTest = malloc(sizeof(User));
+    accountArray = realloc(accountArray, sizeof(User));
     FILE *fi;
     fi = fopen(fileName, "r");
     if(fi != NULL)
@@ -444,7 +444,7 @@ User* load_all_accounts(char* fileName) //Takes the relative or absolute file pa
         {
             if(currentRead > 0)
             {
-                arrayTest = realloc(arrayTest, (currentRead+1)*sizeof(User))
+                accountArray = realloc(accountArray, (currentRead+1)*sizeof(User))
             }
             int round = 0;
             int lastIdx = 0;
@@ -480,15 +480,16 @@ User* load_all_accounts(char* fileName) //Takes the relative or absolute file pa
                     }
                 }
             }
-            strcpy(arrayTest[currentRead].username, uname);
-            strcpy(arrayTest[currentRead].password, pswd);
-            arrayTest[currentRead].isAdmin = admin;
-            arrayTest[currentRead].isRoot = root;
-            arrayTest[currentRead].lineNumber = currentRead;
+            strcpy(accountArray[currentRead].username, uname);
+            strcpy(accountArray[currentRead].password, pswd);
+            accountArray[currentRead].isAdmin = admin;
+            accountArray[currentRead].isRoot = root;
+            accountArray[currentRead].lineNumber = currentRead;
             currentRead++;
         }
     }
-    return arrayTest;
+    fclose(fi);
+    return currentRead;
 }
 
 User load_active_account(int line_number, char* filename) //takes the line number (starting from 0) for the user in the user info file, and will return just the info for that user
@@ -555,7 +556,18 @@ User load_active_account(int line_number, char* filename) //takes the line numbe
             currentRead++;
         }
     }
+    fclose(fi);
     return currentAccount;
+}
+
+void accounts2file(int numOfAccounts, User *arrayTest, char *filename) //writes the appropriate number of accounts to a file, completely removing whatever was in there before, or creating it if non-existant
+{
+    FILE *writeTo;
+    writeTo = fopen(filename, "w");
+    for(int i =0; i < numOfAccounts; i++)
+    {
+        fprintf(writeTo, "%s,%s,%d,%d\n", arrayTest[i].username, arrayTest[i].password, arrayTest[i].isRoot, arrayTest[i].isAdmin);
+    }
 }
 
 int main()
