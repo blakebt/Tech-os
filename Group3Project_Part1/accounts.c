@@ -235,7 +235,7 @@ void removeAdmin(User* database, User root)
 */
 
 //Validates a new password in separate checks with requirements above
-void validate_password(char pwd[])
+int validate_password(char pwd[])
 {
     if(verify_pass_len(pwd) == 1)//Checks length  of password >= 8
     {
@@ -245,12 +245,12 @@ void validate_password(char pwd[])
             {
                 if(verify_specialChar_rule(pwd) == 1)//Checks that password contains at least one of the valid special char's listed above
                 {
-                    printf("Valid password.\n");
+                    return 1;
                 }
             }
         }
     }
-
+    return 0;
 }
 
 //Checks that password is at least 8 characters long
@@ -444,7 +444,7 @@ int load_all_accounts(char* fileName, User *accountArray) //Takes the relative o
         {
             if(currentRead > 0)
             {
-                accountArray = realloc(accountArray, (currentRead+1)*sizeof(User))
+                accountArray = realloc(accountArray, (currentRead+1)*sizeof(User));
             }
             int round = 0;
             int lastIdx = 0;
@@ -588,9 +588,18 @@ void changePassword(User* database, User user)
         printf("Please enter the new password: ");
         scanf(" %s", password);
         // check that it is a valid password
-        validate_password(password);
-        // change the password if valid
-        // print success or error message
+        if(validate_password(password))
+        {
+            // change the password if valid
+            strcpy(database[index].password, password);
+            printf("\nPassword has been changed\n\n");
+        }
+        else
+        {
+            red();
+            printf("\nThe given password is invalid\n\n");
+            reset();
+        }
     }
     // if the user is not changing their own password, check if they are the root first
     else if(user.isRoot)
@@ -601,10 +610,20 @@ void changePassword(User* database, User user)
             printf("Please enter the new password: ");
             scanf(" %s", password);
 
-            // check if the password is valid
-            validate_password(password);
-            // change the password if valid
-            // print success or error message
+            // check that the password is valid
+            if(validate_password(password))
+            {
+                // change the password if valid
+                strcpy(database[index].password, password);
+                printf("\nPassword has been changed\n\n");
+            }
+            // if the password is not valid, print error message
+            else
+            {
+                red();
+                printf("\nThe given password is invalid\n\n");
+                reset();
+            }
         }
     }
     else if(user.isAdmin)
@@ -630,10 +649,20 @@ void changePassword(User* database, User user)
                 printf("Please enter the new password: ");
                 scanf(" %s", password);
 
-                // check if the password is valid
-                validate_password(password);
-                // change the password if valid
-                // print success or error message
+                // check that the password is valid
+                if(validate_password(password))
+                {
+                    // change the password if valid
+                    strcpy(database[index].password, password);
+                    printf("\nPassword has been changed\n\n");
+                }
+                // if the password is not valid, print error message
+                else
+                {
+                    red();
+                    printf("\nThe given password is invalid\n\n");
+                    reset();
+                }
             }
         }
     }
