@@ -570,6 +570,80 @@ void accounts2file(int numOfAccounts, User *arrayTest, char *filename) //writes 
     }
 }
 
+// function to change the password of a user
+void changePassword(User* database, User user)
+{
+    char username[MAX_USERNAME];
+    char password[MAX_PASSWORD];
+
+    printf("\nEnter the user whose password you wish to change: ");
+    scanf(" %s", username);
+    
+    int index = checkUserExists(database, username); // ensure the user exists
+
+    // any user can change their own password, so check this first
+    if (strcmp(username, user.username) == 0)
+    {
+        // ask the user for the new password
+        printf("Please enter the new password: ");
+        scanf(" %s", password);
+        // check that it is a valid password
+        validate_password(password);
+        // change the password if valid
+        // print success or error message
+    }
+    // if the user is not changing their own password, check if they are the root first
+    else if(user.isRoot)
+    {
+        // if the user exists, the index will be 0 or greater
+        if(index >= 0)
+        {
+            printf("Please enter the new password: ");
+            scanf(" %s", password);
+
+            // check if the password is valid
+            validate_password(password);
+            // change the password if valid
+            // print success or error message
+        }
+    }
+    else if(user.isAdmin)
+    {
+        if(index >= 0)
+        {
+            // if the admin is trying to change the password of another admin, print error message
+            if(database[index].isAdmin)
+            {
+                red();
+                printf("\nYou cannot change the password of other administrators.\n\n");
+                reset();
+            }
+            else if(database[index].isRoot)
+            {
+                red();
+                printf("\nYou cannot change the password of the Root user.\n\n");
+                reset();
+            }
+            // the admin wishes to change a basic user's password
+            else
+            {
+                printf("Please enter the new password: ");
+                scanf(" %s", password);
+
+                // check if the password is valid
+                validate_password(password);
+                // change the password if valid
+                // print success or error message
+            }
+        }
+    }
+    else
+    {
+        red();
+        printf("\nYou may not change the password of this user.\n\n");
+        reset();
+    }
+}
 int main()
 {
     // database to store the users
