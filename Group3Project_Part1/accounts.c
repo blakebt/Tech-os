@@ -431,6 +431,7 @@ int load_all_accounts(char* fileName, User *accountArray) //Takes the relative o
     accountArray = realloc(accountArray, sizeof(User));
     FILE *fi;
     fi = fopen(fileName, "r");
+    int currentRead = 0;
     if(fi != NULL)
     {
         char command[10000];
@@ -439,7 +440,6 @@ int load_all_accounts(char* fileName, User *accountArray) //Takes the relative o
         int root;
         int admin;
         int eoftest;
-        int currentRead = 0;
         while(fgets(command, 10000, fi))
         {
             if(currentRead > 0)
