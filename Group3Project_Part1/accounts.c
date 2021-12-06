@@ -545,7 +545,7 @@ User load_active_account(int line_number, char* filename) //takes the line numbe
                     }
                 }
             }
-            if(currentRead == findLine)
+            if(currentRead == line_number)
             {
                 strcpy(currentAccount.username, uname);
                 strcpy(currentAccount.password, pswd);
