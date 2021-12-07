@@ -697,13 +697,13 @@ void changePassword(User* database, User user)
         if(index >= 0)
         {
             // if the admin is trying to change the password of another admin, print error message
-            if(database[index].isAdmin)
+            if(database[index].isAdmin == 1)
             {
                 red();
                 printf("\nYou cannot change the password of other administrators.\n\n");
                 reset();
             }
-            else if(database[index].isRoot)
+            else if(database[index].isRoot == 1)
             {
                 red();
                 printf("\nYou cannot change the password of the Root user.\n\n");
@@ -739,19 +739,3 @@ void changePassword(User* database, User user)
         reset();
     }
 }
-// int main()
-// {
-//     // database to store the users
-//     User* database = (User*)malloc(MAX_USERS * sizeof(User));
-
-//     User user1 = initializeUser("user1", "user1pass");
-//     User user2 = initializeUser("user2", "user2pass");
-//     database[0] = user1;
-//     database[1] = user2;
-//     makeRoot(user1);
-
-//     login(database);
-//     printf("%d", currentUser.isRoot);
-//     makeAdmin(database, currentUser);
-//     return 0;
-// }

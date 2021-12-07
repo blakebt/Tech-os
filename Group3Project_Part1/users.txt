@@ -1,4 +1,5 @@
 root|pass|1|1
-tyler|superpass|1|0
-user2|Apa55w@rd|0|0
-
+admin2|Pa55w@rd|0|0
+basic1|Pa55w@rd|0|0
+basic2|ABCd123#|0|0
+basic2||0|0

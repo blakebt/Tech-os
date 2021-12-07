@@ -403,6 +403,33 @@ void showFunctionHelp(char* arguments)
         printf("Example of command:\n");
         printf("changepass\n\n");
     }
+    else if(strcmp(arguments, "setadmin") == 0)
+    {
+        blue();
+        printf("\nsetadmin");
+        reset();
+        printf("Elevates a user's permissions to those of an admin. Only the root admin can do this\n\n");
+        printf("Example of command:\n");
+        printf("setadmin\n\n");
+    }
+    else if(strcmp(arguments, "remadmin") == 0)
+    {
+        blue();
+        printf("\nremadmin");
+        reset();
+        printf("Demotes an admin's permissions to those of a normal user. Only the root admin can do this\n\n");
+        printf("Example of command:\n");
+        printf("remadmin\n\n");
+    }
+    else if(strcmp(arguments, "logout") == 0)
+    {
+        blue();
+        printf("\nlogout");
+        reset();
+        printf("Returns the OS to the login screen\n\n");
+        printf("Example of command:\n");
+        printf("logout\n\n");
+    }
     else
     {
         printHelpMenu();

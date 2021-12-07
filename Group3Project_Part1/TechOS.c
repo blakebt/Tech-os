@@ -502,7 +502,7 @@ void commandHandler(User user, User* userList, int numberofaccounts)
             printf("Invalid command entered\n");
             reset();
         }
-
+        fflush(stdin);
         strcpy(currentCommand, "");
         strcpy(arguments, "");
         strcpy(argument2, "");
