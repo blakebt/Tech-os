@@ -1,2 +1,5 @@
-rootAdmin|Apa55w@rd|1|1
+root|pass|1|1
 user2|Apa55w@rd|0|0
+user3|Apa55w@rd|0|0
+user4|Apa55w@rd|0|0
+user6|Apa55w@rd|0|0

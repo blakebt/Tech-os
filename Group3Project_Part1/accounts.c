@@ -20,11 +20,11 @@ User initializeUser(char username[], char password[])
     return user;
 }
 // function to check if a user already exists. Return the index of the user if it exists, -1 if it does not.
-int checkUserExists(User* database, char username[])
+int checkUserExists(char username[])
 {
     for(int i = 0; i < numberofaccounts; i++)
     {
-        if(strcmp(username, database[i].username) == 0)
+        if(strcmp(username, userList[i].username) == 0)
         {
             return i;
         }
@@ -41,7 +41,7 @@ int checkValidName(User* database, char username[])
             return 0;
         }
     }
-    if(checkUserExists(database, username) != -1)
+    if(checkUserExists(username) != -1)
     {
         red();
         printf("User name already exists\n");
@@ -56,7 +56,7 @@ int checkValidName(User* database, char username[])
 // checks if a user is an administrator. Returns 1 if it is, 0 if it is not.
 int checkUserAdmin(User* database, char username[])
 {
-    int index = checkUserExists(database, username);
+    int index = checkUserExists(username);
     // if the user exists the index will be greater than -1
     if(index >= 0)
     {
@@ -85,7 +85,7 @@ int checkUserRoot(User* database, char username[])
         return 0;
     }
     
-    int index = checkUserExists(database, username);
+    int index = checkUserExists(username);
 
     if(index >= 0)
     {
@@ -133,10 +133,10 @@ void login(User* database, int accountNum)
         printf("Password: ");
         scanf(" %s", password);
 
-        int index = checkUserExists(database, username);
+        int index = checkUserExists(username);
         if(index >= 0) // if the user exists
         {
-            if(validate_password(password)) // if the entered password is correct
+            if(checkPassword(database[index], password)) // if the entered password is correct
             {
                 currentUser = database[index]; // change the current user to this user
                 printf("\nLogging in...\n");
@@ -180,7 +180,7 @@ void makeAdmin(User* database, User root)
         printf("\nEnter the user you wish to make an administrator: ");
         scanf(" %s", username);
 
-        int index = checkUserExists(database, username);
+        int index = checkUserExists(username);
         if(index >= 0)
         {
             printf("\nEnter password to confirm: ");
@@ -218,7 +218,7 @@ void removeAdmin(User* database, User root)
         printf("\nEnter the user you wish to remove as an administrator: ");
         scanf(" %s", username);
 
-        int index = checkUserExists(database, username);
+        int index = checkUserExists(username);
         if(index >= 0)
         {
             if(database[index].isAdmin == 0 && database[index].isRoot == 0)
@@ -644,7 +644,7 @@ void changePassword(User* database, User user)
     printf("\nEnter the user whose password you wish to change: ");
     scanf(" %s", username);
     
-    int index = checkUserExists(database, username); // ensure the user exists
+    int index = checkUserExists(username); // ensure the user exists
 
     // any user can change their own password, so check this first
     if (strcmp(username, user.username) == 0)

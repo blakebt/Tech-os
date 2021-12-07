@@ -39,11 +39,10 @@ int deleteUser(int numUsers, char *fileLocation, int callerIsRoot)
     printf("Enter the name to remove\n");
     char deleteName[MAX_USERNAME];
     scanf("%[^\n]%*c", deleteName);
-    if(checkUserExists(userList, deleteName))
+    if(checkUserExists(deleteName))
     {
-        for(int i = 0; i < MAX_USERS; i++)
+        for(int i = 0; i < numberofaccounts; i++)
         {   
-            printf("Current Name: %s\t and name to delete: %s\n", userList[i].username, deleteName); //delete when done
             if(strcmp(deleteName, userList[i].username) == 0 && userList[i].isRoot == 0)
             {
                 if(userList[i].isAdmin == 0 || callerIsRoot == 1)
@@ -119,6 +118,7 @@ int deleteUser(int numUsers, char *fileLocation, int callerIsRoot)
                         fclose(fi);
                         //prints out the new list of users
                         accounts2file(numUsers-1, fileLocation);
+                        int c = getchar();
                         return 1;
                     }
                     else

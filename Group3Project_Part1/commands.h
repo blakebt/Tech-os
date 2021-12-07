@@ -96,7 +96,7 @@ void createFile(char fileName[]);
 void removeFile(char fileName[]);
 //from accounts.c
 User initializeUser(char username[], char password[]);
-int checkUserExists(User* database, char username[]);
+int checkUserExists(char username[]);
 int checkValidName(User* database, char username[]);
 int checkUserAdmin(User* database, char username[]);
 int checkUserRoot(User* database, char username[]);

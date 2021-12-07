@@ -41,7 +41,7 @@ void commandHandler(User user, User* userList, int numberofaccounts)
     struct PCB* suspendedReadyHead = setupPCB("susReadyHead", 0, 0);
     struct PCB* suspendedBlockHead = setupPCB("susBlockHead", 0, 0);
     printWelcome();
-
+    int reenterOS = 0;
     while(1)
     {   
         // display terminal prompt
@@ -412,7 +412,12 @@ void commandHandler(User user, User* userList, int numberofaccounts)
         }
         else if(strcmp(currentCommand, "createu") == 0) //Unable to finish implementation, took too long writing the functions
         { 
-            if(checkUserAdmin(userList, user.username)) //Will need to change when we have admin permissions using checkUserAdmin(User* database, char username[])
+            char uname[MAX_USERNAME];
+            for(int i = 0; i < MAX_USERNAME; i++)
+            {
+                uname[i] = user.username[i];
+            }
+            if(checkUserAdmin(userList, uname)) //Will need to change when we have admin permissions using checkUserAdmin(User* database, char username[])
             {      
                 addNewUser(numberofaccounts, "users.txt");
                 numberofaccounts++;
@@ -427,7 +432,12 @@ void commandHandler(User user, User* userList, int numberofaccounts)
         else if(strcmp(currentCommand, "deleteu") == 0)
         {
             //see above command for similar layout to delete user rules
-            if(checkUserAdmin(userList, user.username))
+            char uname[MAX_USERNAME];
+            for(int i = 0; i < MAX_USERNAME; i++)
+            {
+                uname[i] = user.username[i];
+            }
+            if(checkUserAdmin(userList, uname))
             {
                 if(deleteUser(numberofaccounts, "users.txt", user.isRoot) == 1)
                 {
@@ -458,6 +468,12 @@ void commandHandler(User user, User* userList, int numberofaccounts)
         {
             removeAdmin(userList, user);
         }
+        else if(strcmp(currentCommand, "logout") == 0)
+        {
+            fflush(stdin);
+            reenterOS = 1;
+            break;
+        }
         else if(strcmp(currentCommand,"exit") == 0)
         {
             // confirm that the user wishes to exit
@@ -466,8 +482,12 @@ void commandHandler(User user, User* userList, int numberofaccounts)
 
             if(answer == 'y' || answer == 'Y')
             {
+                fflush(stdin);
                 printf("\nThank you for using TechOS\n");
                 break;
+                blue();
+                printf("If the program gets here contact support at 111 111 111111111111111111111111111111111\n\n\n\n\n\n\n\n\n");
+                reset();
             }
             else
             {
@@ -503,5 +523,9 @@ void commandHandler(User user, User* userList, int numberofaccounts)
         strcpy(argument17, "");
         strcpy(argument18, "");
         strcpy(argument19, "");
+    }
+    if(reenterOS)
+    {
+        login(userList, numberofaccounts);
     }
 }
