@@ -5,6 +5,8 @@
 #include "commands.h"
 
 User currentUser;
+int numberofaccounts;
+User* userList; // Should we make this global?
 
 int rootExists = 0; // 0 if there isn't a root account, 1 if there is. Once this is 1, it should never change.
 

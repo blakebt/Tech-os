@@ -45,8 +45,6 @@ typedef struct
     int lineNumber;//Contains what line user is found in file
 } User;
 
-int numberofaccounts;
-User* userList; // Should we make this global?
 
 void printWelcome();
 void printHelpMenu();

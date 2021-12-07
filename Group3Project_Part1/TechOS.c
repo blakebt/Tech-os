@@ -1,9 +1,10 @@
 #include "commands.h"
 
 
-
 int main()
 {
+    int numberofaccounts;
+    User* userList; // Should we make this global?
     char userFile[] = "users.txt";
     userList = (User*)malloc(sizeof(User));
     numberofaccounts = load_all_accounts(userFile);
