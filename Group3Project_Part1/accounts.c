@@ -189,6 +189,7 @@ void makeAdmin(User* database, User root)
             {
                 database[index].isAdmin = 1;
                 printf("\n%s is now an administrator.\n\n", username);
+                accounts2file(numberofaccounts, userList, accountFile);
             }
         }
         else
@@ -233,6 +234,7 @@ void removeAdmin(User* database, User root)
                 {
                     database[index].isAdmin = 0;
                     printf("\n%s is now removed as an administrator.\n\n", username);
+                    accounts2file(numberofaccounts, userList, accountFile);
                 }
             }
         }

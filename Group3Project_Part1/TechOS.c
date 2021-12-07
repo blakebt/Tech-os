@@ -1,7 +1,5 @@
 #include "commands.h"
 
-User* userList; // Should we make this global?
-int numberofaccounts;
 
 int main()
 {
