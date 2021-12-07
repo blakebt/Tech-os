@@ -7,7 +7,6 @@ int main()
     char userFile[] = "users.txt";
     userList = (User*)malloc(sizeof(User));
     numberofaccounts = load_all_accounts(userFile);
-    printf("%s\n", userList[0].username);
     login(userList, numberofaccounts);
     return 0;
 }
@@ -415,7 +414,7 @@ void commandHandler(User user, User* userList, int numberofaccounts)
         { 
             if(checkUserAdmin(userList, user.username)) //Will need to change when we have admin permissions using checkUserAdmin(User* database, char username[])
             {      
-                addNewUser(userList, numberofaccounts, "users.txt");
+                addNewUser(numberofaccounts, "users.txt");
                 numberofaccounts++;
             }
             else 

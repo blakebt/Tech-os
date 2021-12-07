@@ -24,7 +24,7 @@ int checkUserExists(User* database, char username[])
 {
     for(int i = 0; i < MAX_USERS; i++)
     {
-        printf("%s\n", database[i].username);
+        printf("%s\n", database[i].username);           ///MAKE SURE TO DELETE BEFORE SUBMISSION
         if(strcmp(username, database[i].username) == 0)
         {
             return i;
@@ -190,7 +190,7 @@ void makeAdmin(User* database, User root)
             {
                 database[index].isAdmin = 1;
                 printf("\n%s is now an administrator.\n\n", username);
-                accounts2file(numberofaccounts, userList, accountFile);
+                accounts2file(numberofaccounts, accountFile);
             }
         }
         else
@@ -235,7 +235,7 @@ void removeAdmin(User* database, User root)
                 {
                     database[index].isAdmin = 0;
                     printf("\n%s is now removed as an administrator.\n\n", username);
-                    accounts2file(numberofaccounts, userList, accountFile);
+                    accounts2file(numberofaccounts, accountFile);
                 }
             }
         }
@@ -545,6 +545,8 @@ int load_all_accounts(char* fileName) //Takes the relative or absolute file path
             userList[currentRead].isRoot = root;
             userList[currentRead].lineNumber = currentRead;
             currentRead++;
+            strcpy(uname, "");
+            strcpy(pswd, "");
         }
     }
     fclose(fi);
@@ -619,14 +621,15 @@ User load_active_account(int line_number, char* filename) //takes the line numbe
     return currentAccount;
 }
 
-void accounts2file(int numOfAccounts, User *arrayTest, char *filename) //writes the appropriate number of accounts to a file, completely removing whatever was in there before, or creating it if non-existant
+void accounts2file(int numOfAccounts, char *filename) //writes the appropriate number of accounts to a file, completely removing whatever was in there before, or creating it if non-existant
 {
     FILE *writeTo;
     writeTo = fopen(filename, "w");
     for(int i =0; i < numOfAccounts; i++)
     {
-        fprintf(writeTo, "%s|%s|%d|%d\n", arrayTest[i].username, arrayTest[i].password, arrayTest[i].isRoot, arrayTest[i].isAdmin);
+        fprintf(writeTo, "%s|%s|%d|%d\n", userList[i].username, userList[i].password, userList[i].isRoot, userList[i].isAdmin);
     }
+    flcose(writeTo);
 }
 
 // function to change the password of a user
@@ -652,7 +655,7 @@ void changePassword(User* database, User user)
             // change the password if valid
             strcpy(database[index].password, password);
             printf("\nPassword has been changed\n\n");
-            accounts2file(numberofaccounts, database, accountFile);
+            accounts2file(numberofaccounts, accountFile);
         }
         else
         {

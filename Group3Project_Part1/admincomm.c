@@ -1,13 +1,13 @@
 #include "commands.h"
 
 //make sure to increment the number of users after running this program
-void addNewUser(User *allUsers, int numUsers, char *fileLocation)
+void addNewUser(int numUsers, char *fileLocation)
 {
     //Gets username
     printf("Please enter a unique user name, keep name shorter than %d characters:\n", MAX_USERNAME);
     char username[MAX_USERNAME];
     scanf("%[^\n]%*c", username);
-    while(checkValidName(allUsers, username)== 0)
+    while(checkValidName(userList, username)== 0)
     {
         red();
         printf("Invalid user name, the name must be unique and not include \"|\"\n");
@@ -15,7 +15,7 @@ void addNewUser(User *allUsers, int numUsers, char *fileLocation)
         scanf("%[^\n]%*c", username);
     }
     //Gets password
-    printf("Please select a password\nIt must be between 8 and %d characters long, with at least one of each of the following:\n An upper case letter\n A lower case letter\n A number\n A special character\n");
+    printf("Please select a password\nIt must be between 8 and %d characters long, with at least one of each of the following:\n An upper case letter\n A lower case letter\n A number\n A special character\n", MAX_PASSWORD);
     char password[MAX_PASSWORD];
     scanf("%[^\n]%*c", password);
     while(validate_password(password) == 0)
@@ -27,9 +27,9 @@ void addNewUser(User *allUsers, int numUsers, char *fileLocation)
     }
     User newUser = initializeUser(username, password);
     //Adds newUser to the array of all users, then outputs it to the user file
-    allUsers = realloc(allUsers, (numUsers+1)*sizeof(User));
-    allUsers[numUsers] = newUser;
-    accounts2file(numUsers+1, allUsers, fileLocation);
+    userList = realloc(userList, (numUsers+1)*sizeof(User));
+    userList[numUsers] = newUser;
+    accounts2file(numUsers+1, fileLocation);
 }
 
 //removes user from the array, make sure to decrement the number of users if the function returns 1, otherwise if 0 nothing happened 
@@ -116,7 +116,7 @@ int deleteUser(User *allUsers, int numUsers, char *fileLocation, int callerIsRoo
                         }
                         fclose(fi);
                         //prints out the new list of users
-                        accounts2file(numUsers-1, allUsers, fileLocation);
+                        accounts2file(numUsers-1, fileLocation);
                         return 1;
                     }
                     else
@@ -132,7 +132,7 @@ int deleteUser(User *allUsers, int numUsers, char *fileLocation, int callerIsRoo
                     return 0;
                 }
             }
-            else if(allUsers[i].isRoot == 1)
+            else if(strcmp(deleteName, allUsers[i].username) == 0 && allUsers[i].isRoot == 1)
             {
                 red();
                 printf("Cannot remove root user\n");

@@ -112,10 +112,10 @@ int verify_int_rule(char pwd[]);
 int verify_specialChar_rule(char pwd[]);
 int load_all_accounts(char* fileName);
 User load_active_account(int line_number, char* filename);
-void accounts2file(int numOfAccounts, User *arrayTest, char *filename);
+void accounts2file(int numOfAccounts, char *filename);
 void changePassword(User* database, User user);
 //from admincomm.c
-void addNewUser(User *allUsers, int numUsers, char *fileLocation);
+void addNewUser(int numUsers, char *fileLocation);
 int deleteUser(User *allUsers, int numUsers, char *fileLocation, int callerIsRoot);
 #endif
 
