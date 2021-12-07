@@ -2,19 +2,8 @@
 #include <stdlib.h>
 #include <string.h>
 #include <ctype.h>
+#include "commands.h"
 
-#define MAX_USERNAME 15
-#define MAX_PASSWORD 25
-#define MAX_USERS 10
-
-typedef struct
-{
-    char username[MAX_USERNAME];
-    char password[MAX_PASSWORD];
-    int isAdmin; // boolean. Only the root user can change this for users
-    int isRoot; // boolean. Only one user will have this = 1
-    int lineNumber;//Contains what line user is found in file
-} User;
 
 int rootExists = 0; // 0 if there isn't a root account, 1 if there is. Once this is 1, it should never change.
 User currentUser;
@@ -673,19 +662,19 @@ void changePassword(User* database, User user)
         reset();
     }
 }
-int main()
-{
-    // database to store the users
-    User* database = (User*)malloc(MAX_USERS * sizeof(User));
+// int main()
+// {
+//     // database to store the users
+//     User* database = (User*)malloc(MAX_USERS * sizeof(User));
 
-    User user1 = initializeUser("user1", "user1pass");
-    User user2 = initializeUser("user2", "user2pass");
-    database[0] = user1;
-    database[1] = user2;
-    makeRoot(user1);
+//     User user1 = initializeUser("user1", "user1pass");
+//     User user2 = initializeUser("user2", "user2pass");
+//     database[0] = user1;
+//     database[1] = user2;
+//     makeRoot(user1);
 
-    login(database);
-    printf("%d", currentUser.isRoot);
-    makeAdmin(database, currentUser);
-    return 0;
-}
+//     login(database);
+//     printf("%d", currentUser.isRoot);
+//     makeAdmin(database, currentUser);
+//     return 0;
+// }

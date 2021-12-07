@@ -17,6 +17,10 @@
 #include <dirent.h>
 #include <math.h>
 
+#define MAX_USERNAME 15
+#define MAX_PASSWORD 25
+#define MAX_USERS 10
+
 struct PCB
 {
     char p_name[MAX_PNAME];
@@ -28,6 +32,15 @@ struct PCB
     int isSuspended; // 0 = not suspended, 1 = suspended
     struct PCB* next;
 };
+
+typedef struct
+{
+    char username[MAX_USERNAME];
+    char password[MAX_PASSWORD];
+    int isAdmin; // boolean. Only the root user can change this for users
+    int isRoot; // boolean. Only one user will have this = 1
+    int lineNumber;//Contains what line user is found in file
+} User;
 
 void printWelcome();
 void printHelpMenu();

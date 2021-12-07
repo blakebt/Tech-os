@@ -405,6 +405,19 @@ void commandHandler()
                 printf("\nMultiple word names for folders must be enclosed in quotation marks.\n");
             }
         }
+        else if(strcmp(currentCommand, "create-user") == 0)
+        {
+            if(1==1) //Will need to change when we have admin permissions using checkUserAdmin(User* database, char username[])
+            {
+
+            }
+            else 
+            {
+                red();
+                printf("Must have admin permissions to perform this action\n");
+                reset();
+            }
+        }
         else if(strcmp(currentCommand,"exit") == 0)
         {
             // confirm that the user wishes to exit
