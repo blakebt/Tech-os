@@ -495,13 +495,14 @@ int load_all_accounts(char* fileName) //Takes the relative or absolute file path
     if(fi != NULL)
     {
         char command[MAX_USERNAME + MAX_PASSWORD + 10];
-        char uname[MAX_USERNAME];
-        char pswd[MAX_PASSWORD];
         int root;
         int admin;
         int eoftest;
         while(fgets(command, 10000, fi))
         {
+            
+            char uname[MAX_USERNAME] = "";
+            char pswd[MAX_PASSWORD] = "";
             if(currentRead > 0)
             {
                 userList = realloc(userList, (currentRead+1)*sizeof(User));
@@ -516,7 +517,6 @@ int load_all_accounts(char* fileName) //Takes the relative or absolute file path
                     {
                     case 0:
                         // get user name
-                        printf("Pulled as: %s\t", command);
                         strncpy(uname, command, i);
                         lastIdx = i+1;
                         round++;
@@ -541,7 +541,6 @@ int load_all_accounts(char* fileName) //Takes the relative or absolute file path
                     }
                 }
             }
-            printf("uname is %s \t", uname);
             strcpy(userList[currentRead].username, uname);
             strcpy(userList[currentRead].password, pswd);
             userList[currentRead].isAdmin = admin;
@@ -550,8 +549,6 @@ int load_all_accounts(char* fileName) //Takes the relative or absolute file path
             currentRead++;
             strcpy(uname, "");
             strcpy(pswd, "");
-            printf("Post copy uname: %s\t", uname);
-            printf("Load Account Name: %s\n", userList[currentRead-1].username); ////dleletje;lwjhakletjq;il fhpoe;lawfsipodhs
             strcpy(command, "");
         }
     }
