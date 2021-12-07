@@ -41,7 +41,7 @@ int checkValidName(User* database, char username[])
             return 0;
         }
     }
-    if(checkUserExists(database, username) == -1)
+    if(checkUserExists(database, username) != -1)
     {
         red();
         printf("User name already exists\n");

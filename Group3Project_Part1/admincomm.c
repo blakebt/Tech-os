@@ -15,7 +15,7 @@ void addNewUser(User *allUsers, int numUsers, char *fileLocation)
         scanf("%[^\n]%*c", username);
     }
     //Gets password
-    printf("Please select a password\nIt must be between 8 and %d characters long, with at least one of each of the following:\n An upper case letter\n A lower case letter\n A number\n A special character");
+    printf("Please select a password\nIt must be between 8 and %d characters long, with at least one of each of the following:\n An upper case letter\n A lower case letter\n A number\n A special character\n");
     char password[MAX_PASSWORD];
     scanf("%[^\n]%*c", password);
     while(validate_password(password) == 0)
