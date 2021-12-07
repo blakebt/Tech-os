@@ -31,6 +31,26 @@ int checkUserExists(User* database, char username[])
     }
     return -1;
 }
+// function checks if username includes invalid characters, and calls checkUserExists to make sure name is unique, return 0 if invalid
+int checkValidName(User* database, char username[])
+{
+    for(int i = 0; i < MAX_USERNAME; i++)
+    {
+        if(username[i] == '|')
+        {
+            return 0;
+        }
+    }
+    if(checkUserExists(database, username) == -1)
+    {
+        printf("User name already exists\n");
+        return 0;
+    }
+    else
+    {
+        return 1;
+    }
+}
 // checks if a user is an administrator. Returns 1 if it is, 0 if it is not.
 int checkUserAdmin(User* database, char username[])
 {
@@ -221,25 +241,6 @@ void removeAdmin(User* database, User root)
     6. Must contain @ least one upper case letter (A-Z)
 */
 
-//Validates a new password in separate checks with requirements above
-int validate_password(char pwd[])
-{
-    if(verify_pass_len(pwd) == 1)//Checks length  of password >= 8
-    {
-        if(verify_char_rules(pwd) == 1)//Checks that password contains at least one lower case and upper case letter
-        {
-            if(verify_int_rule(pwd) == 1)//Checks that password contains at least one integer (0-9)
-            {
-                if(verify_specialChar_rule(pwd) == 1)//Checks that password contains at least one of the valid special char's listed above
-                {
-                    return 1;
-                }
-            }
-        }
-    }
-    return 0;
-}
-
 //Checks that password is at least 8 characters long
 int verify_pass_len(char pwd[])
 {
@@ -413,6 +414,25 @@ int verify_specialChar_rule(char pwd[])
     return result;
 }
 
+//Validates a new password in separate checks with requirements above
+int validate_password(char pwd[])
+{
+    if(verify_pass_len(pwd) == 1)//Checks length  of password >= 8
+    {
+        if(verify_char_rules(pwd) == 1)//Checks that password contains at least one lower case and upper case letter
+        {
+            if(verify_int_rule(pwd) == 1)//Checks that password contains at least one integer (0-9)
+            {
+                if(verify_specialChar_rule(pwd) == 1)//Checks that password contains at least one of the valid special char's listed above
+                {
+                    return 1;
+                }
+            }
+        }
+    }
+    return 0;
+}
+
 int load_all_accounts(char* fileName, User *accountArray) //Takes the relative or absolute file path for the user accounts file and returns the number of accounts, adn the array passed in will contain User struct type filled with all accounts' information
 {
     accountArray = realloc(accountArray, sizeof(User));
@@ -437,7 +457,7 @@ int load_all_accounts(char* fileName, User *accountArray) //Takes the relative o
             int lastIdx = 0;
             for(int i = 0; i < strlen(command); i++)
             {
-                if(command[i] == ',')
+                if(command[i] == '|')
                 {
                     switch (round)
                     {
@@ -502,7 +522,7 @@ User load_active_account(int line_number, char* filename) //takes the line numbe
             int lastIdx = 0;
             for(int i = 0; i < strlen(command); i++)
             {
-                if(command[i] == ',')
+                if(command[i] == '|')
                 {
                     switch (round)
                     {
@@ -553,7 +573,7 @@ void accounts2file(int numOfAccounts, User *arrayTest, char *filename) //writes 
     writeTo = fopen(filename, "w");
     for(int i =0; i < numOfAccounts; i++)
     {
-        fprintf(writeTo, "%s,%s,%d,%d\n", arrayTest[i].username, arrayTest[i].password, arrayTest[i].isRoot, arrayTest[i].isAdmin);
+        fprintf(writeTo, "%s|%s|%d|%d\n", arrayTest[i].username, arrayTest[i].password, arrayTest[i].isRoot, arrayTest[i].isAdmin);
     }
 }
 

@@ -2,7 +2,9 @@
 
 int main()
 {
+    char userFile[] = "users.txt";
     User* userList = (User*)malloc(sizeof(User));
+    int numberofaccounts = load_all_accounts(userFile, userList);
     login(userList);
     return 0;
 }
@@ -406,18 +408,23 @@ void commandHandler()
                 printf("\nMultiple word names for folders must be enclosed in quotation marks.\n");
             }
         }
-        else if(strcmp(currentCommand, "create-user") == 0)
+        else if(strcmp(currentCommand, "createu") == 0) //Unable to finish implementation, took too long writing the functions
+        { 
+            // if(checkUserAdmin(database, currentUser.username)) //Will need to change when we have admin permissions using checkUserAdmin(User* database, char username[])
+            // {                              
+            //        addNewUser(userList, numberofaccounts, userFile);
+            //        numberofaccounts++;
+            // }
+            // else 
+            // {
+            //     red();
+            //     printf("Must have admin permissions to perform this action\n");
+            //     reset();
+            // }
+        }
+        else if(strcmp(currentCommand, "deleteu") == 0)
         {
-            if(1==1) //Will need to change when we have admin permissions using checkUserAdmin(User* database, char username[])
-            {
-
-            }
-            else 
-            {
-                red();
-                printf("Must have admin permissions to perform this action\n");
-                reset();
-            }
+            //see above command for similar layout to delete user rules
         }
         else if(strcmp(currentCommand,"exit") == 0)
         {

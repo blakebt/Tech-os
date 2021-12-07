@@ -89,9 +89,10 @@ void changeDirectory(char argument[]);
 void deleteDirectory(char folderName[]);
 void createFile(char fileName[]);
 void removeFile(char fileName[]);
-//From accounts.c
+//from accounts.c
 User initializeUser(char username[], char password[]);
 int checkUserExists(User* database, char username[]);
+int checkValidName(User* database, char username[]);
 int checkUserAdmin(User* database, char username[]);
 int checkUserRoot(User* database, char username[]);
 int checkPassword(User user, char password[]);
@@ -108,6 +109,7 @@ int load_all_accounts(char* fileName, User *accountArray);
 User load_active_account(int line_number, char* filename);
 void accounts2file(int numOfAccounts, User *arrayTest, char *filename);
 void changePassword(User* database, User user);
-
+//from admincomm.c
+void addNewUser(User *allUsers, int numUsers, char *fileLocation);
 #endif
 
