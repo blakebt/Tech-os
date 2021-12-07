@@ -21,10 +21,8 @@
 #define MAX_USERNAME 15
 #define MAX_PASSWORD 25
 #define MAX_USERS 10
+#define accountFile "users.txt"
 
-User* userList; // Should we make this global?
-int numberofaccounts;
-char accountFile[] = "users.txt";
 
 struct PCB
 {
@@ -46,6 +44,9 @@ typedef struct
     int isRoot; // boolean. Only one user will have this = 1
     int lineNumber;//Contains what line user is found in file
 } User;
+
+User* userList; // Should we make this global?
+int numberofaccounts;
 
 void printWelcome();
 void printHelpMenu();
