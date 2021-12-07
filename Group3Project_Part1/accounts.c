@@ -4,7 +4,7 @@
 #include <ctype.h>
 #include "commands.h"
 
-//User currentUser;
+User currentUser;
 
 int rootExists = 0; // 0 if there isn't a root account, 1 if there is. Once this is 1, it should never change.
 
@@ -627,7 +627,6 @@ void accounts2file(int numOfAccounts, User *arrayTest, char *filename) //writes 
     {
         fprintf(writeTo, "%s|%s|%d|%d\n", arrayTest[i].username, arrayTest[i].password, arrayTest[i].isRoot, arrayTest[i].isAdmin);
     }
-    fclose(filename);
 }
 
 // function to change the password of a user
