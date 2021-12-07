@@ -190,6 +190,7 @@ void makeAdmin(User* database, User root)
                 database[index].isAdmin = 1;
                 printf("\n%s is now an administrator.\n\n", username);
                 accounts2file(numberofaccounts, accountFile);
+                load_all_accounts(accountFile);
             }
         }
         else
@@ -235,6 +236,7 @@ void removeAdmin(User* database, User root)
                     database[index].isAdmin = 0;
                     printf("\n%s is now removed as an administrator.\n\n", username);
                     accounts2file(numberofaccounts, accountFile);
+                    load_all_accounts(accountFile);
                 }
             }
         }
@@ -492,9 +494,9 @@ int load_all_accounts(char* fileName) //Takes the relative or absolute file path
     int currentRead = 0;
     if(fi != NULL)
     {
-        char command[10000];
-        char uname[10000];
-        char pswd[10000];
+        char command[MAX_USERNAME + MAX_PASSWORD + 10];
+        char uname[MAX_USERNAME];
+        char pswd[MAX_PASSWORD];
         int root;
         int admin;
         int eoftest;
@@ -514,6 +516,7 @@ int load_all_accounts(char* fileName) //Takes the relative or absolute file path
                     {
                     case 0:
                         // get user name
+                        printf("Pulled as: %s\t", command);
                         strncpy(uname, command, i);
                         lastIdx = i+1;
                         round++;
@@ -538,6 +541,7 @@ int load_all_accounts(char* fileName) //Takes the relative or absolute file path
                     }
                 }
             }
+            printf("uname is %s \t", uname);
             strcpy(userList[currentRead].username, uname);
             strcpy(userList[currentRead].password, pswd);
             userList[currentRead].isAdmin = admin;
@@ -546,6 +550,9 @@ int load_all_accounts(char* fileName) //Takes the relative or absolute file path
             currentRead++;
             strcpy(uname, "");
             strcpy(pswd, "");
+            printf("Post copy uname: %s\t", uname);
+            printf("Load Account Name: %s\n", userList[currentRead-1].username); ////dleletje;lwjhakletjq;il fhpoe;lawfsipodhs
+            strcpy(command, "");
         }
     }
     fclose(fi);
