@@ -16,6 +16,7 @@
 #include <errno.h>
 #include <dirent.h>
 #include <math.h>
+#include <ctype.h>
 
 #define MAX_USERNAME 15
 #define MAX_PASSWORD 25
@@ -88,5 +89,25 @@ void changeDirectory(char argument[]);
 void deleteDirectory(char folderName[]);
 void createFile(char fileName[]);
 void removeFile(char fileName[]);
+//From accounts.c
+User initializeUser(char username[], char password[]);
+int checkUserExists(User* database, char username[]);
+int checkUserAdmin(User* database, char username[]);
+int checkUserRoot(User* database, char username[]);
+int checkPassword(User user, char password[]);
+void login(User* database);
+void makeRoot(User user);
+void makeAdmin(User* database, User root);
+void removeAdmin(User* database, User root);
+int validate_password(char pwd[]);
+int verify_pass_len(char pwd[]);
+int verify_char_rules(char pwd[]);
+int verify_int_rule(char pwd[]);
+int verify_specialChar_rule(char pwd[]);
+int load_all_accounts(char* fileName, User *accountArray);
+User load_active_account(int line_number, char* filename);
+void accounts2file(int numOfAccounts, User *arrayTest, char *filename);
+void changePassword(User* database, User user);
+
 #endif
 

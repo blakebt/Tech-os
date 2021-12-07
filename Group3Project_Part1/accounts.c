@@ -97,31 +97,37 @@ void login(User* database)
 {
     char username[MAX_USERNAME];
     char password[MAX_PASSWORD];
+    int isCredValid = 0; // 0 - credentials are invalid, 1 - credentials are valid
     
-    printf("\nUsername: ");
-    scanf(" %s" , username);
-
-    printf("Password: ");
-    scanf(" %s", password);
-
-    int index = checkUserExists(database, username);
-    if(index >= 0) // if the user exists
+    do
     {
-        if(validate_password(password)) // if the entered password is correct
+        printf("\nUsername: ");
+        scanf(" %s" , username);
+
+        printf("Password: ");
+        scanf(" %s", password);
+
+        int index = checkUserExists(database, username);
+        if(index >= 0) // if the user exists
         {
-            currentUser = database[index]; // change the current user to this user
-            printf("\nLogging in...\n");
-            printf("Successfully logged in.\n\n");
+            if(validate_password(password)) // if the entered password is correct
+            {
+                currentUser = database[index]; // change the current user to this user
+                printf("\nLogging in...\n");
+                printf("Successfully logged in.\n\n");
+                isCredValid = 1; // Valid credentials were entered
+            }
+            
         }
         else
         {
-            printf("\nThe password entered is incorrect.\n\n");
+            printf("\nThe username or password entered is incorrect.\n\n");
         }
-    }
-    else
-    {
-        printf("\nEither the user does not exist, or the username entered is incorrect.\n\n");
-    }
+        
+    } while (isCredValid != 1);
+
+    commandHandler(); // Login successful direct user to command handler
+    
 }
 // function to make a user the root. This should only be run once
 void makeRoot(User user)
@@ -149,14 +155,10 @@ void makeAdmin(User* database, User root)
                 database[index].isAdmin = 1;
                 printf("\n%s is now an administrator.\n\n", username);
             }
-            else
-            {
-                printf("\nEntered password is incorrect.\n\n");
-            }
         }
         else
         {
-            printf("\nThis user does not exist.\n");
+            printf("\nThe username or password entered is incorrect.\n\n");
         }
     }
     else
@@ -191,15 +193,11 @@ void removeAdmin(User* database, User root)
                     database[index].isAdmin = 0;
                     printf("\n%s is now removed as an administrator.\n\n", username);
                 }
-                else
-                {
-                    printf("\nEntered password is incorrect.\n\n");
-                }
             }
         }
         else
         {
-            printf("\nThis user does not exist.\n");
+            printf("\nThe username or password entered is incorrect.\n\n");
         }
     }   
     else

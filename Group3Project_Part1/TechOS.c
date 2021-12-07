@@ -2,7 +2,8 @@
 
 int main()
 {
-    commandHandler();
+    User* userList = (User*)malloc(sizeof(User));
+    login(userList);
     return 0;
 }
 
