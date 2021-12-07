@@ -22,6 +22,10 @@
 #define MAX_PASSWORD 25
 #define MAX_USERS 10
 
+User* userList; // Should we make this global?
+int numberofaccounts;
+char accountFile[] = "users.txt";
+
 struct PCB
 {
     char p_name[MAX_PNAME];

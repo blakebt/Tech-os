@@ -649,6 +649,7 @@ void changePassword(User* database, User user)
             // change the password if valid
             strcpy(database[index].password, password);
             printf("\nPassword has been changed\n\n");
+            accounts2file(numberofaccounts, database, accountFile);
         }
         else
         {
