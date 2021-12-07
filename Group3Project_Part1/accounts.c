@@ -119,7 +119,7 @@ int checkPassword(User user, char password[])
     }
 }
 // function to login to the system
-void login(User* database)
+void login(User* database, int accountNum)
 {
     char username[MAX_USERNAME];
     char password[MAX_PASSWORD];
@@ -155,7 +155,7 @@ void login(User* database)
     } while (isCredValid != 1);
 
     int c = getchar(); // Gets rid of new line character so command handler does not use default case in switch statement within command handler
-    commandHandler(currentUser); // Login successful direct user to command handler, also pass User
+    commandHandler(currentUser, database, accountNum); // Login successful direct user to command handler, also pass User
     
 }
 // function to make a user the root. This should only be run once

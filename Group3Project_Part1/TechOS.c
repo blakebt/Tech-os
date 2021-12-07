@@ -12,7 +12,7 @@ int main()
     return 0;
 }
 
-void commandHandler(User user)
+void commandHandler(User user, User* userList, int numberofaccounts)
 {
     time_t t;
     srand(time(&t));
@@ -436,6 +436,12 @@ void commandHandler(User user)
                 }
                 
             }
+            else
+            {
+                red();
+                printf("Must have admin permissions to perform this action\n");
+                reset();
+            }
         }
         else if(strcmp(currentCommand, "changepass") == 0)
         {
@@ -479,5 +485,20 @@ void commandHandler(User user)
         strcpy(argument2, "");
         strcpy(argument3, "");
         strcpy(argument4, "");
+        strcpy(argument5, "");
+        strcpy(argument6, "");
+        strcpy(argument7, "");
+        strcpy(argument8, "");
+        strcpy(argument9, "");
+        strcpy(argument10, "");
+        strcpy(argument11, "");
+        strcpy(argument12, "");
+        strcpy(argument13, "");
+        strcpy(argument14, "");
+        strcpy(argument15, "");
+        strcpy(argument16, "");
+        strcpy(argument17, "");
+        strcpy(argument18, "");
+        strcpy(argument19, "");
     }
 }
