@@ -45,8 +45,8 @@ typedef struct
     int lineNumber;//Contains what line user is found in file
 } User;
 
-User* userList; // Should we make this global?
 int numberofaccounts;
+User* userList; // Should we make this global?
 
 void printWelcome();
 void printHelpMenu();
@@ -110,7 +110,7 @@ int verify_pass_len(char pwd[]);
 int verify_char_rules(char pwd[]);
 int verify_int_rule(char pwd[]);
 int verify_specialChar_rule(char pwd[]);
-int load_all_accounts(char* fileName, User *accountArray);
+int load_all_accounts(char* fileName);
 User load_active_account(int line_number, char* filename);
 void accounts2file(int numOfAccounts, User *arrayTest, char *filename);
 void changePassword(User* database, User user);

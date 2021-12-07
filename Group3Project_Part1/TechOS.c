@@ -1,11 +1,13 @@
 #include "commands.h"
 
 
+
 int main()
 {
     char userFile[] = "users.txt";
     userList = (User*)malloc(sizeof(User));
-    numberofaccounts = load_all_accounts(userFile, userList);
+    numberofaccounts = load_all_accounts(userFile);
+    printf("%s\n", userList[0].username);
     login(userList, numberofaccounts);
     return 0;
 }

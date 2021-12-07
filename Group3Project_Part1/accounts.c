@@ -4,9 +4,9 @@
 #include <ctype.h>
 #include "commands.h"
 
+User currentUser;
 
 int rootExists = 0; // 0 if there isn't a root account, 1 if there is. Once this is 1, it should never change.
-User currentUser;
 
 // function to intialize a user
 User initializeUser(char username[], char password[])
@@ -24,6 +24,7 @@ int checkUserExists(User* database, char username[])
 {
     for(int i = 0; i < MAX_USERS; i++)
     {
+        printf("%s\n", database[i].username);
         if(strcmp(username, database[i].username) == 0)
         {
             return i;
@@ -484,9 +485,9 @@ int validate_password(char pwd[])
     return 0;
 }
 
-int load_all_accounts(char* fileName, User *accountArray) //Takes the relative or absolute file path for the user accounts file and returns the number of accounts, adn the array passed in will contain User struct type filled with all accounts' information
+int load_all_accounts(char* fileName) //Takes the relative or absolute file path for the user accounts file and returns the number of accounts, adn the array passed in will contain User struct type filled with all accounts' information
 {
-    accountArray = realloc(accountArray, sizeof(User));
+    userList = realloc(userList, sizeof(User));
     FILE *fi;
     fi = fopen(fileName, "r");
     int currentRead = 0;
@@ -502,7 +503,7 @@ int load_all_accounts(char* fileName, User *accountArray) //Takes the relative o
         {
             if(currentRead > 0)
             {
-                accountArray = realloc(accountArray, (currentRead+1)*sizeof(User));
+                userList = realloc(userList, (currentRead+1)*sizeof(User));
             }
             int round = 0;
             int lastIdx = 0;
@@ -538,11 +539,11 @@ int load_all_accounts(char* fileName, User *accountArray) //Takes the relative o
                     }
                 }
             }
-            strcpy(accountArray[currentRead].username, uname);
-            strcpy(accountArray[currentRead].password, pswd);
-            accountArray[currentRead].isAdmin = admin;
-            accountArray[currentRead].isRoot = root;
-            accountArray[currentRead].lineNumber = currentRead;
+            strcpy(userList[currentRead].username, uname);
+            strcpy(userList[currentRead].password, pswd);
+            userList[currentRead].isAdmin = admin;
+            userList[currentRead].isRoot = root;
+            userList[currentRead].lineNumber = currentRead;
             currentRead++;
         }
     }
