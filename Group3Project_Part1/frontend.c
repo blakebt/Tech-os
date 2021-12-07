@@ -394,6 +394,15 @@ void showFunctionHelp(char* arguments)
         printf("Example of command:\n");
         printf("deleteu\n\n");
     }
+    else if(strcmp(arguments, "changepass") == 0)
+    {
+        blue();
+        printf("\nchangepass");
+        reset();
+        printf("Changes a user's password. Admins can change basic user passwords and the root admin can change any passsword\n\n");
+        printf("Example of command:\n");
+        printf("changepass\n\n");
+    }
     else
     {
         printHelpMenu();
