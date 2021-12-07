@@ -429,9 +429,13 @@ void commandHandler(User user, User* userList, int numberofaccounts)
             //see above command for similar layout to delete user rules
             if(checkUserAdmin(userList, user.username))
             {
-                if(deleteUser(userList, numberofaccounts, "users.txt", user.isRoot) == 1)
+                if(deleteUser(numberofaccounts, "users.txt", user.isRoot) == 1)
                 {
                     printf("User removed.\n");
+                }
+                else
+                {
+                    printf("User not removed\n");
                 }
                 
             }

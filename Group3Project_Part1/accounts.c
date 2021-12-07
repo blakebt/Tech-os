@@ -22,9 +22,8 @@ User initializeUser(char username[], char password[])
 // function to check if a user already exists. Return the index of the user if it exists, -1 if it does not.
 int checkUserExists(User* database, char username[])
 {
-    for(int i = 0; i < MAX_USERS; i++)
+    for(int i = 0; i < numberofaccounts; i++)
     {
-        printf("%s\n", database[i].username);           ///MAKE SURE TO DELETE BEFORE SUBMISSION
         if(strcmp(username, database[i].username) == 0)
         {
             return i;
@@ -629,7 +628,7 @@ void accounts2file(int numOfAccounts, char *filename) //writes the appropriate n
     {
         fprintf(writeTo, "%s|%s|%d|%d\n", userList[i].username, userList[i].password, userList[i].isRoot, userList[i].isAdmin);
     }
-    flcose(writeTo);
+    fclose(writeTo);
 }
 
 // function to change the password of a user

@@ -116,6 +116,6 @@ void accounts2file(int numOfAccounts, char *filename);
 void changePassword(User* database, User user);
 //from admincomm.c
 void addNewUser(int numUsers, char *fileLocation);
-int deleteUser(User *allUsers, int numUsers, char *fileLocation, int callerIsRoot);
+int deleteUser(int numUsers, char *fileLocation, int callerIsRoot);
 #endif
 

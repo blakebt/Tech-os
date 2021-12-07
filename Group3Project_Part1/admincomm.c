@@ -30,23 +30,25 @@ void addNewUser(int numUsers, char *fileLocation)
     userList = realloc(userList, (numUsers+1)*sizeof(User));
     userList[numUsers] = newUser;
     accounts2file(numUsers+1, fileLocation);
+    load_all_accounts(accountFile);
 }
 
 //removes user from the array, make sure to decrement the number of users if the function returns 1, otherwise if 0 nothing happened 
-int deleteUser(User *allUsers, int numUsers, char *fileLocation, int callerIsRoot)
+int deleteUser(int numUsers, char *fileLocation, int callerIsRoot)
 {
     printf("Enter the name to remove\n");
     char deleteName[MAX_USERNAME];
     scanf("%[^\n]%*c", deleteName);
-    if(checkUserExists(allUsers, deleteName))
+    if(checkUserExists(userList, deleteName))
     {
         for(int i = 0; i < MAX_USERS; i++)
-        {
-            if(strcmp(deleteName, allUsers[i].username) == 0 && allUsers[i].isRoot == 0)
+        {   
+            printf("Current Name: %s\t and name to delete: %s\n", userList[i].username, deleteName); //delete when done
+            if(strcmp(deleteName, userList[i].username) == 0 && userList[i].isRoot == 0)
             {
-                if(allUsers[i].isAdmin == 0 || callerIsRoot == 1)
+                if(userList[i].isAdmin == 0 || callerIsRoot == 1)
                 {
-                    //what follows is a work of insanity, we realloc the allUsers array to one less than the old number of users, read to file to this 
+                    //what follows is a work of insanity, we realloc the userList array to one less than the old number of users, read to file to this 
                     //array, ignoring the name that matches the user, then print out the new array back to the file
                     printf("User found, do you wish to continue? y/n:");
                     char answer;
@@ -54,7 +56,7 @@ int deleteUser(User *allUsers, int numUsers, char *fileLocation, int callerIsRoo
                     if(answer == 'y')
                     {
                         //reallocates the proportionally less memory 
-                        allUsers = realloc(allUsers, (numUsers-1)*sizeof(User));
+                        userList = realloc(userList, (numUsers-1)*sizeof(User));
                         //reads all but the name to be removed to the array
                         FILE *fi;
                         fi = fopen(fileLocation, "r");
@@ -105,11 +107,11 @@ int deleteUser(User *allUsers, int numUsers, char *fileLocation, int callerIsRoo
                                 }
                                 if(strcmp(deleteName, uname))
                                 {
-                                    strcpy(allUsers[currentRead].username, uname);
-                                    strcpy(allUsers[currentRead].password, pswd);
-                                    allUsers[currentRead].isAdmin = admin;
-                                    allUsers[currentRead].isRoot = root;
-                                    allUsers[currentRead].lineNumber = currentRead;
+                                    strcpy(userList[currentRead].username, uname);
+                                    strcpy(userList[currentRead].password, pswd);
+                                    userList[currentRead].isAdmin = admin;
+                                    userList[currentRead].isRoot = root;
+                                    userList[currentRead].lineNumber = currentRead;
                                     currentRead++;
                                 }
                             }
@@ -132,7 +134,7 @@ int deleteUser(User *allUsers, int numUsers, char *fileLocation, int callerIsRoo
                     return 0;
                 }
             }
-            else if(strcmp(deleteName, allUsers[i].username) == 0 && allUsers[i].isRoot == 1)
+            else if(strcmp(deleteName, userList[i].username) == 0 && userList[i].isRoot == 1)
             {
                 red();
                 printf("Cannot remove root user\n");
@@ -140,6 +142,10 @@ int deleteUser(User *allUsers, int numUsers, char *fileLocation, int callerIsRoo
                 return 0;
             }
         }
+        red();
+        printf("Unknown error occured, user found but still non-existant\n");
+        reset();
+        return 0;
     }
     else
     {
