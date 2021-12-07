@@ -1,15 +1,18 @@
 #include "commands.h"
 
+User* userList; // Should we make this global?
+int numberofaccounts;
+
 int main()
 {
     char userFile[] = "users.txt";
-    User* userList = (User*)malloc(sizeof(User));
-    int numberofaccounts = load_all_accounts(userFile, userList);
+    userList = (User*)malloc(sizeof(User));
+    numberofaccounts = load_all_accounts(userFile, userList);
     login(userList);
     return 0;
 }
 
-void commandHandler()
+void commandHandler(User user)
 {
     time_t t;
     srand(time(&t));
@@ -410,21 +413,41 @@ void commandHandler()
         }
         else if(strcmp(currentCommand, "createu") == 0) //Unable to finish implementation, took too long writing the functions
         { 
-            // if(checkUserAdmin(database, currentUser.username)) //Will need to change when we have admin permissions using checkUserAdmin(User* database, char username[])
-            // {                              
-            //        addNewUser(userList, numberofaccounts, userFile);
-            //        numberofaccounts++;
-            // }
-            // else 
-            // {
-            //     red();
-            //     printf("Must have admin permissions to perform this action\n");
-            //     reset();
-            // }
+            if(checkUserAdmin(userList, user.username)) //Will need to change when we have admin permissions using checkUserAdmin(User* database, char username[])
+            {      
+                addNewUser(userList, numberofaccounts, "users.txt");
+                numberofaccounts++;
+            }
+            else 
+            {
+                red();
+                printf("Must have admin permissions to perform this action\n");
+                reset();
+            }
         }
         else if(strcmp(currentCommand, "deleteu") == 0)
         {
             //see above command for similar layout to delete user rules
+            if(checkUserAdmin(userList, user.username))
+            {
+                if(deleteUser(userList, numberofaccounts, "users.txt", user.isRoot) == 1)
+                {
+                    printf("User removed.\n");
+                }
+                
+            }
+        }
+        else if(strcmp(currentCommand, "changepass") == 0)
+        {
+            changePassword(userList, user);
+        }
+        else if(strcmp(currentCommand, "setadmin") == 0)
+        {
+            makeAdmin(userList, user);
+        }
+        else if(strcmp(currentCommand, "remadmin") == 0)
+        {
+            removeAdmin(userList, user);
         }
         else if(strcmp(currentCommand,"exit") == 0)
         {

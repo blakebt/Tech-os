@@ -48,7 +48,7 @@ void printHelpMenu();
 void showFunctionHelp(char* arguments);
 void showVersion();
 void displayTime(char* arguments);
-void commandHandler();
+void commandHandler(User user);
 void red();
 void blue();
 void green();

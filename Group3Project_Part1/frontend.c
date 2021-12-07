@@ -361,7 +361,7 @@ void showFunctionHelp(char* arguments)
     else if(strcmp(arguments, "view-dir") == 0)
     {
         blue();
-        printf("\nview-dir");
+        printf("\nview-dir ");
         reset();
         printf("shows files in the current directory or specified directory\n\n");
         printf("Example of command:\n");
@@ -370,11 +370,29 @@ void showFunctionHelp(char* arguments)
     else if(strcmp(arguments, "change-dir") == 0)
     {
         blue();
-        printf("\nchange-dir");
+        printf("\nchange-dir ");
         reset();
         printf("changes the current directory using a full path, relative path, or use '~' to go up a directory\n\n");
         printf("Example of command:\n");
         printf("change-dir [directory path]\n\n");
+    }
+    else if(strcmp(arguments, "createu") == 0)
+    {
+        blue();
+        printf("\ncreateu ");
+        reset();
+        printf("Adds new user to the system. Only the root admin and admins can create users.\n\n");
+        printf("Example of command:\n");
+        printf("createu\n\n");
+    }
+    else if(strcmp(arguments, "deleteu") == 0)
+    {
+        blue();
+        printf("\ndeleteu ");
+        reset();
+        printf("Removes user from the system. Only the root admin and admins can basic users. Only root admin can remove admins.\n\n");
+        printf("Example of command:\n");
+        printf("deleteu\n\n");
     }
     else
     {

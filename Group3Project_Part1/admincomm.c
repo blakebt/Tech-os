@@ -32,7 +32,7 @@ void addNewUser(User *allUsers, int numUsers, char *fileLocation)
     accounts2file(numUsers+1, allUsers, fileLocation);
 }
 
-//removes user from the array, make sure to dencrement the number of users if the function returns 1, otherwise if 0 nothing happened 
+//removes user from the array, make sure to decrement the number of users if the function returns 1, otherwise if 0 nothing happened 
 int deleteUser(User *allUsers, int numUsers, char *fileLocation, int callerIsRoot)
 {
     printf("Enter the name to remove\n");

@@ -1,1 +1,1 @@
- help, version, display-date, change-date, display-time, suspend, resume, set-priority, show-pcb, show-ready-processes, show-blocked-processes, show-processes, load-process, dispatch, view-dir, change-dir, createf, deletef, mkdir, rmdir, exit
+ help, version, display-date, change-date, display-time, suspend, resume, set-priority, show-pcb, show-ready-processes, show-blocked-processes, show-processes, load-process, dispatch, view-dir, change-dir, createf, deletef, mkdir, rmdir, createu, deleteu, changepass, setadmin, remadmin, exit

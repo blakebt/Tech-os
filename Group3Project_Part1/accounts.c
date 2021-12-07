@@ -43,7 +43,9 @@ int checkValidName(User* database, char username[])
     }
     if(checkUserExists(database, username) == -1)
     {
+        red();
         printf("User name already exists\n");
+        reset();
         return 0;
     }
     else
@@ -69,7 +71,9 @@ int checkUserAdmin(User* database, char username[])
     }
     else
     {
+        red();
         printf("\nThis user does not exist.\n\n");
+        reset();
         return 0;
     }
 }
@@ -96,7 +100,9 @@ int checkUserRoot(User* database, char username[])
     }
     else
     {
+        red();
         printf("\nThis user does not exists.\n\n");
+        reset();
         return 0;
     }
 }
@@ -141,12 +147,15 @@ void login(User* database)
         }
         else
         {
+            red();
             printf("\nThe username or password entered is incorrect.\n\n");
+            reset();
         }
         
     } while (isCredValid != 1);
 
-    commandHandler(); // Login successful direct user to command handler
+    int c = getchar(); // Gets rid of new line character so command handler does not use default case in switch statement within command handler
+    commandHandler(currentUser); // Login successful direct user to command handler, also pass User
     
 }
 // function to make a user the root. This should only be run once
@@ -178,12 +187,16 @@ void makeAdmin(User* database, User root)
         }
         else
         {
+            red();
             printf("\nThe username or password entered is incorrect.\n\n");
+            reset();
         }
     }
     else
     {
+        red();
         printf("\nThis user is not the root or an administrator.\n\n");
+        reset();
     }
 }
 
@@ -202,7 +215,9 @@ void removeAdmin(User* database, User root)
         {
             if(database[index].isAdmin == 0 && database[index].isRoot == 0)
             {
+                red();
                 printf("%s is not an administrator\n\n", database[index].username);
+                reset();
             }
             else
             {
@@ -217,12 +232,16 @@ void removeAdmin(User* database, User root)
         }
         else
         {
+            red();
             printf("\nThe username or password entered is incorrect.\n\n");
+            reset();
         }
     }   
     else
     {
+        red();
         printf("\nThis user is not the root or an administrator.\n\n");
+        reset();
     }             
 }
 
@@ -253,7 +272,9 @@ int verify_pass_len(char pwd[])
     if(count < 7)
     {
         result = 0;//Sets password as invalid
+        red();
         printf("Password must be at least 8 characters long.\n");
+        reset();
 
     }
     else
@@ -295,19 +316,25 @@ int verify_char_rules(char pwd[])
     if(isInvalidPwd == 1 && (lowerCharExists == 0 && upperCharExists == 0))
     {
         result = 0;
+        red();
         printf("Password requires at least one lower case and upper case letter.\n");
+        reset();
     }
     else
     {
         if(lowerCharExists == 0 && upperCharExists == 1)
         {
             result = 0;
+            red();
             printf("Password requires at least one lower case letter.\n");
+            reset();
         }
         else if(upperCharExists == 0 && lowerCharExists == 1)
         {
             result = 0;
+            red();
             printf("Password requires at least one upper case letter.\n");
+            reset();
         }
         else
         {
@@ -341,7 +368,9 @@ int verify_int_rule(char pwd[])
     else
     {
         result = 0;
+        red();
         printf("Password must contain at least one digit between 0 and 9\n");
+        reset();
     }
 
     return result;
@@ -362,27 +391,39 @@ int verify_specialChar_rule(char pwd[])
             switch(pwd[index])
             {
             case ' ':
+                red();
                 printf("Spaces are not allowed in password.\n");
+                reset();
                 isInvalidChar = 1;
                 break;
             case ';':
+                red();
                 printf("Semicolon not allowed in password.\n");
+                reset();
                 isInvalidChar = 1;
                 break;
             case '|':
+                red();
                 printf("Vertical slash not allowed in password.\n");
+                reset();
                 isInvalidChar = 1;
                 break;
             case '"':
+                red();
                 printf("Quotation not allowed in password.\n");
+                reset();
                 isInvalidChar = 1;
                 break;
             case '<':
+                red();
                 printf("Left angle bracket not allowed in password.\n");
+                reset();
                 isInvalidChar = 1;
                 break;
             case '>':
+                red();
                 printf("Right angle bracket not allowed in password.\n");
+                reset();
                 isInvalidChar = 1;
                 break;
             default:
@@ -402,7 +443,9 @@ int verify_specialChar_rule(char pwd[])
     {
         if(hasSpecChar == 0)
         {
+            red();
             printf("Password requires at least one special character.\n");
+            reset();
             result = 0;
         }
         else
