@@ -619,7 +619,7 @@ User load_active_account(int line_number, char* filename) //takes the line numbe
 void accounts2file(int numOfAccounts, User *arrayTest, char *filename) //writes the appropriate number of accounts to a file, completely removing whatever was in there before, or creating it if non-existant
 {
     FILE *writeTo;
-    writeTo = fopen(filename, "r+");
+    writeTo = fopen(filename, "w");
     for(int i =0; i < numOfAccounts; i++)
     {
         fprintf(writeTo, "%s|%s|%d|%d\n", arrayTest[i].username, arrayTest[i].password, arrayTest[i].isRoot, arrayTest[i].isAdmin);
