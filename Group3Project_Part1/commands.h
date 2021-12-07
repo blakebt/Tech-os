@@ -47,6 +47,7 @@ typedef struct
 
 int numberofaccounts;
 User* userList; // Should we make this global?
+User currentUser;
 
 void printWelcome();
 void printHelpMenu();
