@@ -118,7 +118,7 @@ void login(User* database)
     int index = checkUserExists(database, username);
     if(index >= 0) // if the user exists
     {
-        if(checkPassword(database[index], password)) // if the entered password is correct
+        if(validate_password(password)) // if the entered password is correct
         {
             currentUser = database[index]; // change the current user to this user
             printf("\nLogging in...\n");
